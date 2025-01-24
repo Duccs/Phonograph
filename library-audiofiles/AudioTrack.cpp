@@ -24,7 +24,7 @@ void AudioTrack::setSamplesPerSecond(const int samplesPerSecond) {
 }
 
 void AudioTrack::setSeconds(const double seconds) {
-    if (seconds < 0) {
+    if (seconds <= 0) {
         return;
     }
     this->seconds = seconds;
@@ -32,6 +32,9 @@ void AudioTrack::setSeconds(const double seconds) {
 }
 
 void AudioTrack::setSize(const int samplesPerSeconds, const double seconds) {
+    if (samplesPerSeconds < 1 || seconds <= 0) {
+        return;
+    }
     setSamplesPerSecond(samplesPerSeconds);
     setSeconds(seconds);
 }
