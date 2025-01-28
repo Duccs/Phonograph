@@ -6,9 +6,9 @@ void rampup_fill_audio_track(ApplicationData& app_data) {
     double seconds = audio_track.getSeconds();
     int samples_per_second = audio_track.getSamplesPerSecond();
     double value = 0.0;
-    int entires = samples_per_second * seconds;
-    double increment = 0.0 + (1.0 - 0.0) * 1.0 / (entires - 1);
-    for (int i = 0; i < samples_per_second * seconds -1; i++) {
+    int entries = samples_per_second * seconds;
+    double increment = 1.0 / (entries - 1);
+    for (int i = 0; i < entries; i++) {
         audio_track.setValue(i, value);
         value += increment;
     }
@@ -19,9 +19,9 @@ void rampdown_fill_audio_track(ApplicationData& app_data) {
     double seconds = audio_track.getSeconds();
     int samples_per_second = audio_track.getSamplesPerSecond();
     double value = 1.0;
-    int entires = samples_per_second * seconds;
-    double decrement = 0.0 + (1.0 - 0.0) * 1.0 / (entires - 1);
-    for (int i = 0; i < samples_per_second * seconds -1; i++) {
+    int entries = samples_per_second * seconds;
+    double decrement = 0.0 + (1.0 - 0.0) * 1.0 / (entries - 1);
+    for (int i = 0; i < entries; i++) {
         audio_track.setValue(i, value);
         value -= decrement;
     }
@@ -31,10 +31,9 @@ void display_audio_track(ApplicationData& app_data) {
     AudioTrack& audio_track = app_data.getAudioTrack();
     double seconds = audio_track.getSeconds();
     int samples_per_second = audio_track.getSamplesPerSecond();
-    app_data.getOutputStream() << "\n";
+    int entries = samples_per_second * seconds;
     app_data.getOutputStream() << "\nsample_number,amplitude\n";
-    app_data.getOutputStream() << samples_per_second * seconds << "\n";
-    for (int i = 0; i < samples_per_second * seconds -1; i++) {
+    for (int i = 0; i < entries; i++) {
         app_data.getOutputStream() << i << "," << audio_track.getValue(i) << std::endl;
     }
 }
