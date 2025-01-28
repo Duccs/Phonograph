@@ -1,5 +1,4 @@
 #include "AudioTrack.h"
-#include "ApplicationData.h"
 #include "audio_track_creator_aux.h"
 
 void rampup_fill_audio_track(ApplicationData& app_data) {

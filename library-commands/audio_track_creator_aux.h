@@ -1,6 +1,8 @@
 #ifndef AUDIO_TRACK_CREATOR_AUX_H
 #define AUDIO_TRACK_CREATOR_AUX_Hs
 
+#include "ApplicationData.h"
+
 void rampup_fill_audio_track(ApplicationData& app_data);
 
 void rampdown_fill_audio_track(ApplicationData& app_data);
