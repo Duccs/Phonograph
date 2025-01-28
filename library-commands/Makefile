@@ -2,7 +2,7 @@
 all: libcommands.a
 
 libcommands.a: questions3_aux.o audio_track_creator_aux.o
-	ar crus $@ $^
+	ar crus $@ $^ 
 
 audio_track_creator_aux.o: audio_track_creator_aux.cpp audio_track_creator_aux.h ../include/AudioTrack.h ../include/ApplicationData.h
 	g++ -I ../include -o $@ -c $<
