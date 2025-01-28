@@ -1,9 +1,10 @@
 #include "ApplicationData.h"
+#include "AudioTrack.h"
 #include <string>
 #include <iostream>
 
 ApplicationData::ApplicationData(std::istream& input_stream, std::ostream& output_stream) 
-  : mInputStream(input_stream), mOutputStream(output_stream) {
+  : mInputStream(input_stream), mOutputStream(output_stream), mAudioTrack() {
 }
 
 int ApplicationData::getInteger(const std::string& prompt) {
@@ -36,4 +37,12 @@ std::istream& ApplicationData::getInputStream() {
 }
 std::ostream& ApplicationData::getOutputStream() {
   return mOutputStream;
+}
+
+AudioTrack& ApplicationData::getAudioTrack() {
+  return mAudioTrack;
+}
+
+const AudioTrack& ApplicationData::getAudioTrack() const {
+  return mAudioTrack;
 }

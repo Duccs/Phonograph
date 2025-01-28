@@ -1,9 +1,11 @@
 #ifndef _APPLICATIONDATA_H_
 #define _APPLICATIONDATA_H_
 
+#include "AudioTrack.h"
 #include <iostream>
 #include <string>
 #include <map>
+
 
 class ApplicationData {
 public:
@@ -17,9 +19,13 @@ public:
   std::istream& getInputStream();
   std::ostream& getOutputStream();
 
+  AudioTrack& getAudioTrack();
+  const AudioTrack& getAudioTrack() const;
+
 protected:
   std::istream& mInputStream;
   std::ostream& mOutputStream;
+  AudioTrack mAudioTrack;
 
 private:
 
