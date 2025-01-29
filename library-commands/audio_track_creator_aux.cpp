@@ -12,6 +12,7 @@ void rampup_fill_audio_track(ApplicationData& app_data) {
         audio_track.setValue(i, value);
         value += increment;
     }
+    audio_track.setValue(entries - 1, 1.0); // Set the final value explicitly to 1.0
 }
 
 void rampdown_fill_audio_track(ApplicationData& app_data) {
@@ -20,11 +21,12 @@ void rampdown_fill_audio_track(ApplicationData& app_data) {
     int samples_per_second = audio_track.getSamplesPerSecond();
     double value = 1.0;
     int entries = samples_per_second * seconds;
-    double decrement = 0.0 + (1.0 - 0.0) * 1.0 / (entries - 1);
+    double decrement = 1.0 / (entries - 1);
     for (int i = 0; i < entries; i++) {
         audio_track.setValue(i, value);
         value -= decrement;
     }
+    audio_track.setValue(entries - 1, 0.0); // Set the last sample to 0
 }
 
 void display_audio_track(ApplicationData& app_data) {
