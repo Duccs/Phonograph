@@ -41,16 +41,14 @@ void display_audio_track(ApplicationData& app_data) {
 }
 
 void fill_audio_track(ApplicationData& app_data) {
-    std::string fill_style;
-    app_data.promptUser("Fill style: ");
-    std::cin >> fill_style;
+    std::string fill_style = app_data.getString("Fill style: ");
 
     if (fill_style == "rampup") {
         rampup_fill_audio_track(app_data);
     } else if (fill_style == "rampdown") {
         rampdown_fill_audio_track(app_data);
     } else {
-        app_data.promptUser("Fill style '" + fill_style + "' is not allowed.\n");
+        app_data.getOutputStream() << "Fill style '" + fill_style + "' is not allowed.\n";
     }
 }
 
@@ -58,21 +56,20 @@ int audio_track_creator(ApplicationData& app_data) {
     int samples_per_second;
     double seconds;
 
-    app_data.promptUser("Samples/Second: ");
-    std::cin >> samples_per_second;
+    while(true){
+        samples_per_second = app_data.getInteger("Samples/Second: ");
 
-    app_data.promptUser("Seconds: ");
-    std::cin >> seconds;
+        seconds = app_data.getDouble("Seconds: ");
 
-    if (samples_per_second > 0 && seconds > 0) {
-        AudioTrack& audio_track = app_data.getAudioTrack();
-        audio_track.setSamplesPerSecond(samples_per_second);
-        audio_track.setSeconds(seconds);
-        fill_audio_track(app_data);
-        display_audio_track(app_data);
-        return audio_track.getSize();
-    } else {
-        app_data.promptUser("Positive values expected for samples per second and seconds.\n");
-        return 0;
+        if (samples_per_second > 0 && seconds > 0) {
+            AudioTrack& audio_track = app_data.getAudioTrack();
+            audio_track.setSamplesPerSecond(samples_per_second);
+            audio_track.setSeconds(seconds);
+            fill_audio_track(app_data);
+            display_audio_track(app_data);
+            return audio_track.getSize();
+        } else {
+            app_data.getOutputStream() << "Positive values expected for samples per second and seconds.\n";
+        }
     }
 }
