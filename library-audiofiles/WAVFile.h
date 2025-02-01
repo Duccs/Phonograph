@@ -1,10 +1,27 @@
 #ifndef _WAVFILE_H_
 #define _WAVFILE_H_
 
+#include <string>
+#include <vector>
+#include "AudioTrack.h"
+
 class WAVFile {
     protected:
         int samplesPerSecond;
         int bitsPerSample;
+
+        unsigned int dataSubchunkPosition;
+
+        void open(const std::string& filename, std::ofstream& output_stream);
+        void writeRIFFHeader(std::ostream& output_stream);
+        void writeFMTSubchunk(std::ostream& output_stream);
+        void writeDataSubchunkHeader(std::ostream& output_stream);
+        void writeOneTrackData(std::ostream& output_stream, const double track_data
+        , int maximum_amplitude, int bytes_per_sample);
+        void writeTracks(std::ostream& output_stream, const std::vector<AudioTrack>& tracks);
+        void writeSizes(std::ostream& output_stream);
+        void close(std::ofstream& output_stream);
+
     public:
         WAVFile(int samples_per_second, int bits_per_sample);
         int getSamplesPerSecond() const;
@@ -12,6 +29,8 @@ class WAVFile {
         void setSamplesPerSecond(const int samples_per_second);
         void setBitsPerSample(const int bits_per_sample);
 
+        void writeFile(const std::string& filename, const std::vector<AudioTrack>& tracks);
+        void writeFile(std::ostream& output_stream, const std::vector<AudioTrack>& tracks);
 };
 
 #endif /* _WAVFILE_H_ */
