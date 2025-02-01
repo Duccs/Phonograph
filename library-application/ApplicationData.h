@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 
 
 class ApplicationData {
@@ -22,10 +23,15 @@ public:
   AudioTrack& getAudioTrack();
   const AudioTrack& getAudioTrack() const;
 
+  double getDoubleRegister(const unsigned int position) const;
+  void setDoubleRegister(const unsigned int position, const double value);
+
 protected:
   std::istream& mInputStream;
   std::ostream& mOutputStream;
   AudioTrack mAudioTrack;
+
+  std::vector<double> doubleRegisters;
 
 private:
 

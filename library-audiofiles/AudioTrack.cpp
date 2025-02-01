@@ -3,6 +3,11 @@
 
 AudioTrack::AudioTrack() : samplesPerSecond(0), seconds(0), values() {}
 
+// Function to check if a value is a whole number for calculating number of entries
+bool AudioTrack::isWholeNumber(double value) {
+    return std::fmod(value, 1) == 0;
+}
+
 int AudioTrack::getSamplesPerSecond() const {
     return samplesPerSecond;
 }
@@ -58,7 +63,13 @@ void AudioTrack::setValue(const unsigned int index, const double value) {
 }
 
 void AudioTrack::resizeValues() {
-    values.resize(samplesPerSecond * seconds);
+    int entries;
+    if (isWholeNumber(samplesPerSecond * seconds)) {
+        entries = ceil(samplesPerSecond * seconds);
+    } else{
+        entries = samplesPerSecond * seconds;
+    }
+    values.resize(entries);
     for (unsigned int i = 0; i < values.size(); i++) {
         values[i] = 0;
     }

@@ -5,6 +5,9 @@
 
 class AudioTrack {
     public:
+        // Tool method used across app
+        bool isWholeNumber(double value);
+
         AudioTrack();
         int getSamplesPerSecond() const;
         double getSeconds() const;

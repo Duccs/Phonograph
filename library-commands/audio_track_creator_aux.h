@@ -13,4 +13,8 @@ void fill_audio_track(ApplicationData& app_data);
 
 int audio_track_creator(ApplicationData& app_data);
 
+void sine_fill_audio_track(ApplicationData& app_data);
+
+void sawtooth_fill_audio_track(ApplicationData& app_data);
+
 #endif /* AUDIO_TRACK_CREATOR_AUX_H */

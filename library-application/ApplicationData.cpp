@@ -2,9 +2,11 @@
 #include "AudioTrack.h"
 #include <string>
 #include <iostream>
+#include <cmath>
 
 ApplicationData::ApplicationData(std::istream& input_stream, std::ostream& output_stream) 
-  : mInputStream(input_stream), mOutputStream(output_stream), mAudioTrack() {
+  : mInputStream(input_stream), mOutputStream(output_stream), mAudioTrack(), doubleRegisters() {
+    doubleRegisters.resize(5);
 }
 
 int ApplicationData::getInteger(const std::string& prompt) {
@@ -45,4 +47,18 @@ AudioTrack& ApplicationData::getAudioTrack() {
 
 const AudioTrack& ApplicationData::getAudioTrack() const {
   return mAudioTrack;
+}
+
+double ApplicationData::getDoubleRegister(const unsigned int position) const {
+  if (position >= doubleRegisters.size()) {
+    return -INFINITY;
+  }
+  return doubleRegisters[position];
+}
+
+void ApplicationData::setDoubleRegister(const unsigned int position, const double value) {
+  if (position >= doubleRegisters.size()) {
+    return;
+  }
+  doubleRegisters[position] = value;
 }
