@@ -102,14 +102,7 @@ void sine_fill_audio_track(ApplicationData& app_data) {
         angle = (6.28 * i * frequency) / samples_per_second;
         amplitude = std::sin(angle);
         audio_track.setValue(i, amplitude);
-
-        if ( i == 1229) { 
-            std::cout << "Reached 1229" << std::endl;
-            std::cout << "Angle: " << angle << std::endl;
-            std::cout << "Amplitude: " << amplitude << std::endl;
-        }
     }
-    std::cout << "Entry 1229: " << audio_track.getValue(1229) << std::endl;
 }
 
 void sawtooth_fill_audio_track(ApplicationData& app_data) {
@@ -126,6 +119,5 @@ void sawtooth_fill_audio_track(ApplicationData& app_data) {
         j = i % cycle_size;
         amplitude = -1.0 + (2.0 * j) / (cycle_size - 1);
         audio_track.setValue(i, amplitude);
-        samples_per_second = amplitude;
     }
 }
