@@ -22,7 +22,10 @@ void WAVFile::setSamplesPerSecond(const int samples_per_second) {
 }
 
 void WAVFile::setBitsPerSample(const int bits_per_sample) {
-    if(bits_per_sample % 8 == 0) {
+    // Accepts 8, 16, 24, and 32 only
+    if(bits_per_sample > 0 && bits_per_sample % 8 == 0 
+        && (bits_per_sample == 8 || bits_per_sample == 16 
+        || bits_per_sample == 24 || bits_per_sample == 32)){
         bitsPerSample = bits_per_sample;
     }
 }
