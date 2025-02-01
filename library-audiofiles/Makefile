@@ -22,10 +22,10 @@ install: ../lib/libaudiofiles.a ../include/AudioTrack.h ../include/endian_io.h .
 ../include/AudioTrack.h: AudioTrack.h
 	cp $< $@
 
-../include/AudioTrack.h: endian_io.h
+../include/endian_io.h: endian_io.h
 	cp $< $@
 
-../include/AudioTrack.h: WAVFile.h
+../include/WAVFile.h: WAVFile.h
 	cp $< $@
 
 clean:
