@@ -125,11 +125,8 @@ void WAVFile::writeTracks(std::ostream& output_stream, const std::vector<AudioTr
 
     for (unsigned int i = 0; i < tracks[0].getSize(); i++) {
         writeOneTrackData(output_stream, tracks[0].getValue(i), maximumAmplitude, bytesPerSample);
-        
-    }
-
-    for (unsigned int i = 0; i < tracks[1].getSize(); i++) {
         writeOneTrackData(output_stream, tracks[1].getValue(i), maximumAmplitude, bytesPerSample);
+        
     }
 }
 
