@@ -2,6 +2,7 @@
 #define _APPLICATIONDATA_H_
 
 #include "AudioTrack.h"
+#include "WAVFile.h"
 #include <iostream>
 #include <string>
 #include <map>
@@ -26,12 +27,19 @@ public:
   double getDoubleRegister(const unsigned int position) const;
   void setDoubleRegister(const unsigned int position, const double value);
 
+  WAVFile& getWAVFile();
+  const WAVFile& getWAVFile() const;
+  std::vector<AudioTrack>& getChannels();
+  const std::vector<AudioTrack>& getChannels() const;
+
 protected:
   std::istream& mInputStream;
   std::ostream& mOutputStream;
   AudioTrack mAudioTrack;
+  WAVFile mWAVFile;
 
   std::vector<double> doubleRegisters;
+  std::vector<AudioTrack> audioTracks;
 
 private:
 

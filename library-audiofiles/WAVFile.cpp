@@ -2,6 +2,7 @@
 #include "endian_io.h"
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 WAVFile::WAVFile(int samples_per_second, int bits_per_sample)
 : samplesPerSecond(0), bitsPerSample(0) {
@@ -39,7 +40,7 @@ void WAVFile::open(const std::string& filename, std::ofstream& output_stream) {
 
 void WAVFile::writeRIFFHeader(std::ostream& output_stream){
     output_stream.write("RIFF", 4);
-    output_stream.write("0", 4);
+    little_endian_io::write_4_bytes(output_stream, 0);
     output_stream.write("WAVE", 4);
 }
 
@@ -55,9 +56,10 @@ void WAVFile::writeFMTSubchunk(std::ostream& output_stream) {
     // For PCM formats, the value should be 1.
     little_endian_io::write_2_bytes(output_stream, 1);
 
+    int NumChannels = 2;
     // NumChannels
     // The number of channels, 1 for mono, 2 for stereo.
-    little_endian_io::write_2_bytes(output_stream, 1);
+    little_endian_io::write_2_bytes(output_stream, NumChannels);
 
     // SamplesRate
     // The number of samples per second. (44100 for “CD Quality”)
@@ -66,12 +68,12 @@ void WAVFile::writeFMTSubchunk(std::ostream& output_stream) {
     // ByteRate
     // The number of bytes per second.
     // SampleRate * NumChannels * BitsPerSample/8.
-    little_endian_io::write_4_bytes(output_stream, samplesPerSecond * (bitsPerSample / 8));
+    little_endian_io::write_4_bytes(output_stream, samplesPerSecond * NumChannels * (bitsPerSample / 8));
 
     // BlockAlign
     // The number of bytes per sample, including all channels.
     // NumChannels * BitsPerSample/8.
-    little_endian_io::write_2_bytes(output_stream, bitsPerSample / 8);
+    little_endian_io::write_2_bytes(output_stream, NumChannels * (bitsPerSample / 8));
     
     // BitsPerSample
     // The number of bits per sample, per channel.
@@ -93,7 +95,24 @@ void WAVFile::writeDataSubchunkHeader(std::ostream& output_stream){
 
 void WAVFile::writeOneTrackData(std::ostream& output_stream, const double track_data, int maximum_amplitude, int bytes_per_sample){
     int value = static_cast<int>(track_data * maximum_amplitude);
-    little_endian_io::write_1_bytes(output_stream, value);
+    switch (bytes_per_sample)
+    {
+    case 1:
+        little_endian_io::write_1_bytes(output_stream, value);
+        break;
+    case 2:
+        little_endian_io::write_2_bytes(output_stream, value);
+        break;
+    case 3:
+        little_endian_io::write_3_bytes(output_stream, value);
+        break;
+    case 4:
+        little_endian_io::write_4_bytes(output_stream, value);
+        break;
+    default:
+        break;
+    }
+    
 }
 
 void WAVFile::writeTracks(std::ostream& output_stream, const std::vector<AudioTrack>& tracks){
@@ -102,10 +121,14 @@ void WAVFile::writeTracks(std::ostream& output_stream, const std::vector<AudioTr
     }
 
     int bytesPerSample = bitsPerSample / 8;
-    int maximumAmplitude = (1 << (bitsPerSample - 1)) - 1;
+    int maximumAmplitude = (int)pow(2, bitsPerSample - 1) - 1;
 
     for (unsigned int i = 0; i < tracks[0].getSize(); i++) {
         writeOneTrackData(output_stream, tracks[0].getValue(i), maximumAmplitude, bytesPerSample);
+        
+    }
+
+    for (unsigned int i = 0; i < tracks[1].getSize(); i++) {
         writeOneTrackData(output_stream, tracks[1].getValue(i), maximumAmplitude, bytesPerSample);
     }
 }

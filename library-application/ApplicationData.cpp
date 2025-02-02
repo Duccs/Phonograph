@@ -5,8 +5,9 @@
 #include <cmath>
 
 ApplicationData::ApplicationData(std::istream& input_stream, std::ostream& output_stream) 
-  : mInputStream(input_stream), mOutputStream(output_stream), mAudioTrack(), doubleRegisters() {
+  : mInputStream(input_stream), mOutputStream(output_stream), mAudioTrack(), mWAVFile(1, 8), doubleRegisters(), audioTracks() {
     doubleRegisters.resize(5);
+    audioTracks.resize(0);
 }
 
 int ApplicationData::getInteger(const std::string& prompt) {
@@ -61,4 +62,20 @@ void ApplicationData::setDoubleRegister(const unsigned int position, const doubl
     return;
   }
   doubleRegisters[position] = value;
+}
+
+WAVFile& ApplicationData::getWAVFile() {
+  return mWAVFile;
+}
+
+const WAVFile& ApplicationData::getWAVFile() const {
+  return mWAVFile;
+}
+
+std::vector<AudioTrack>& ApplicationData::getChannels() {
+  return audioTracks;
+}
+
+const std::vector<AudioTrack>& ApplicationData::getChannels() const {
+  return audioTracks;
 }

@@ -46,3 +46,6 @@
 
 # Github Workflows belong to the instructor
 .github
+
+#WAV Fike
+*.wav
