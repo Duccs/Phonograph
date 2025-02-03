@@ -42,7 +42,7 @@ int wav_file_creator(ApplicationData& app_data){
         fill_channels(app_data);
         save_wav_file(app_data);
     } else {
-        app_data.getOutputStream() << "Positive values expected for samples per second and seconds.";
+        app_data.getOutputStream() << "Positive values expected for samples per second and seconds.\n";
     }
 
     return audioTrack.getSize();

@@ -84,13 +84,13 @@ void WAVFile::writeDataSubchunkHeader(std::ostream& output_stream){
     // SubchunkID
     output_stream.write("data", 4);
 
+    // Data position
+    dataSubchunkPosition = output_stream.tellp();
+
     // SubchunkSize
     // the number of bytes in the file that follow this field.
     // In other words, the number of bytes in the file minus 44.
-    little_endian_io::write_4_bytes(output_stream, 0);   
-
-    // Data position
-    dataSubchunkPosition = output_stream.tellp();
+    little_endian_io::write_4_bytes(output_stream, 0);
 }
 
 void WAVFile::writeOneTrackData(std::ostream& output_stream, const double track_data, int maximum_amplitude, int bytes_per_sample){
@@ -132,21 +132,23 @@ void WAVFile::writeTracks(std::ostream& output_stream, const std::vector<AudioTr
 
 void WAVFile::writeSizes(std::ostream& output_stream){
     // Store current position, doubles as the total file size
-    std::streampos fileSize = output_stream.tellp();
+    int fileSize = static_cast<int>(output_stream.tellp());
 
     // Move to 4 bytes after RIFF  identifier, which is RIFF chunk size
     output_stream.seekp(4);
 
     // Write the RIFF chunck size
-    int riffChunkSize = static_cast<int>(fileSize) - 8;
+    int riffChunkSize = fileSize - 8;
     little_endian_io::write_4_bytes(output_stream, riffChunkSize);
+    std::cout << "RIFF chunk size: " << riffChunkSize << std::endl;
 
     // Move to where the data subchunck size should be written
     output_stream.seekp(dataSubchunkPosition);
 
     // Write the data subchunk size
-    int dataSubchunkSize = static_cast<int>(fileSize) - 44;
+    int dataSubchunkSize = fileSize - 44;
     little_endian_io::write_4_bytes(output_stream, dataSubchunkSize);
+    std::cout << "Data subchunk size: " << dataSubchunkSize << std::endl;
 }
 
 void WAVFile::close(std::ofstream& output_stream){
