@@ -140,7 +140,6 @@ void WAVFile::writeSizes(std::ostream& output_stream){
     // Write the RIFF chunck size
     int riffChunkSize = fileSize - 8;
     little_endian_io::write_4_bytes(output_stream, riffChunkSize);
-    std::cout << "RIFF chunk size: " << riffChunkSize << std::endl;
 
     // Move to where the data subchunck size should be written
     output_stream.seekp(dataSubchunkPosition);
@@ -148,7 +147,6 @@ void WAVFile::writeSizes(std::ostream& output_stream){
     // Write the data subchunk size
     int dataSubchunkSize = fileSize - 44;
     little_endian_io::write_4_bytes(output_stream, dataSubchunkSize);
-    std::cout << "Data subchunk size: " << dataSubchunkSize << std::endl;
 }
 
 void WAVFile::close(std::ofstream& output_stream){
