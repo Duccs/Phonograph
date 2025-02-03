@@ -44,6 +44,6 @@ int wav_file_creator(ApplicationData& app_data){
     } else {
         app_data.getOutputStream() << "Positive values expected for samples per second and seconds.\n";
     }
-
+    app_data.getOutputStream().flush();
     return audioTrack.getSize();
 }
