@@ -19,11 +19,11 @@ void fill_channels(ApplicationData& app_data){
     std::vector<AudioTrack>& channels = app_data.getChannels();
     channels.resize(2);
 
-    app_data.getOutputStream() << "Left Channnel" << std::endl;
+    app_data.getOutputStream() << "Left Channel" << std::endl;
     fill_audio_track(app_data);
     channels[0] = app_data.getAudioTrack();
             
-    app_data.getOutputStream() << "Right Channnel" << std::endl;
+    app_data.getOutputStream() << "Right Channel" << std::endl;
     fill_audio_track(app_data);
     channels[1] = app_data.getAudioTrack();
 }

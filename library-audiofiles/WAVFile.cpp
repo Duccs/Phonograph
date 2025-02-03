@@ -145,7 +145,7 @@ void WAVFile::writeSizes(std::ostream& output_stream){
     output_stream.seekp(dataSubchunkPosition);
 
     // Write the data subchunk size
-    int dataSubchunkSize = static_cast<int>(fileSize) - dataSubchunkPosition - 8;
+    int dataSubchunkSize = static_cast<int>(fileSize) - 44;
     little_endian_io::write_4_bytes(output_stream, dataSubchunkSize);
 }
 
