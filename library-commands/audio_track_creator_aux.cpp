@@ -63,6 +63,10 @@ void fill_audio_track(ApplicationData& app_data) {
         double frequency = app_data.getDouble("Frequency: ");
         app_data.setDoubleRegister(0, frequency);
         sawtooth_fill_audio_track(app_data);
+    } else if (fill_style == "reverse-sawtooth") {
+        double frequency = app_data.getDouble("Frequency: ");
+        app_data.setDoubleRegister(0, frequency);
+        reverse_sawtooth_fill_audio_track(app_data);
     } else {
         app_data.getOutputStream() << "Fill style '" + fill_style + "' is not allowed.\n";
         exit(0);
@@ -118,6 +122,23 @@ void sawtooth_fill_audio_track(ApplicationData& app_data) {
     for (int i = 0; i < entries; i++) {
         j = i % cycle_size;
         amplitude = -1.0 + (2.0 * j) / (cycle_size - 1);
+        audio_track.setValue(i, amplitude);
+    }
+}
+
+void reverse_sawtooth_fill_audio_track(ApplicationData& app_data){
+    AudioTrack& audio_track = app_data.getAudioTrack();
+    double seconds = audio_track.getSeconds();
+    int samples_per_second = audio_track.getSamplesPerSecond();
+    double frequency = app_data.getDoubleRegister(0);
+    int cycle_size = samples_per_second/frequency;
+    double j;
+    double angle;
+    double amplitude;
+    int entries = numberOfSamples(app_data);
+    for (int i = 0; i < entries; i++) {
+        j = i % cycle_size;
+        amplitude = 1.0 - (2.0 * j) / (cycle_size - 1);
         audio_track.setValue(i, amplitude);
     }
 }

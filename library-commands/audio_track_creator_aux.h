@@ -17,4 +17,6 @@ void sine_fill_audio_track(ApplicationData& app_data);
 
 void sawtooth_fill_audio_track(ApplicationData& app_data);
 
+void reverse_sawtooth_fill_audio_track(ApplicationData& app_data);
+
 #endif /* AUDIO_TRACK_CREATOR_AUX_H */
