@@ -9,6 +9,7 @@ class WAVFile {
     protected:
         int samplesPerSecond;
         int bitsPerSample;
+        int NumberOfChannels;
 
         unsigned int dataSubchunkPosition;
 
@@ -26,11 +27,14 @@ class WAVFile {
         WAVFile(int samples_per_second, int bits_per_sample);
         int getSamplesPerSecond() const;
         int getBitsPerSample() const;
+        int getNumberOfChannels() const;
         void setSamplesPerSecond(const int samples_per_second);
         void setBitsPerSample(const int bits_per_sample);
+        void setNumberOfChannels(const int number_of_channels);
 
         void writeFile(const std::string& filename, const std::vector<AudioTrack>& tracks);
         void writeFile(std::ostream& output_stream, const std::vector<AudioTrack>& tracks);
+
 };
 
 #endif /* _WAVFILE_H_ */

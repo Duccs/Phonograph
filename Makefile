@@ -9,6 +9,7 @@ build:
 	make -C program-audio-track-creator all
 	make -C program-wav-file-creator all
 	make -C program-difference all
+	make -C program-multi-track-creator all
 
 clean:
 	make -C library-audiofiles clean
@@ -19,5 +20,6 @@ clean:
 	make -C program-audio-track-creator clean
 	make -C program-wav-file-creator clean
 	make -C program-difference clean
+	make -C program-multi-track-creator clean
 	-cd lib && rm -f *.a 
 	-cd include && rm -f *.h
