@@ -1,7 +1,7 @@
 # Build the library here
 all: libcommands.a
 
-libcommands.a: questions3_aux.o audio_track_creator_aux.o wav_file_creator_aux.o difference_aux.o multi_track_creator_aux.o
+libcommands.a: questions3_aux.o audio_track_creator_aux.o wav_file_creator_aux.o difference_aux.o multi_track_creator_aux.o waveform_test_aux.o
 	ar crus $@ $^ 
 
 wav_file_creator_aux.o: wav_file_creator_aux.cpp wav_file_creator_aux.h ../include/AudioTrack.h ../include/WAVFile.h ../include/ApplicationData.h
@@ -19,8 +19,11 @@ difference_aux.o: difference_aux.cpp difference_aux.h ../include/ApplicationData
 multi_track_creator_aux.o: multi_track_creator_aux.cpp multi_track_creator_aux.h ../include/AudioTrack.h ../include/ApplicationData.h ../include/WAVFile.h
 	g++ -I ../include -o $@ -c $<
 
+waveform_test_aux.o: waveform_test_aux.cpp waveform_test_aux.h ../include/AudioTrack.h ../include/ApplicationData.h ../include/WAVFile.h ../include/Waveform.h ../include/SineWaveform.h ../include/SquareWaveform.h
+	g++ -I ../include -o $@ -c $<
+
 # Install the library for other parts of the project to use
-install: ../lib/libcommands.a ../include/questions3_aux.h ../include/audio_track_creator_aux.h ../include/wav_file_creator_aux.h ../include/difference_aux.h ../include/multi_track_creator_aux.h
+install: ../lib/libcommands.a ../include/questions3_aux.h ../include/audio_track_creator_aux.h ../include/wav_file_creator_aux.h ../include/difference_aux.h ../include/multi_track_creator_aux.h ../include/waveform_test_aux.h
 
 ../lib/libcommands.a: libcommands.a
 	cp $< $@
@@ -38,6 +41,9 @@ install: ../lib/libcommands.a ../include/questions3_aux.h ../include/audio_track
 	cp $< $@
 
 ../include/multi_track_creator_aux.h: multi_track_creator_aux.h
+	cp $< $@
+
+../include/waveform_test_aux.h: waveform_test_aux.h
 	cp $< $@
 
 clean:

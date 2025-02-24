@@ -1,0 +1,13 @@
+#ifndef _SINEWAVEFORM_H_
+#define _SINEWAVEFORM_H_
+
+#include "Waveform.h"
+
+class SineWaveform : public Waveform {
+    public:
+        SineWaveform(const std::string& name);
+        virtual ~SineWaveform();
+        virtual double generateOneSample(const double frequency, const int sample_number, const double samples_per_second) const;
+};
+
+#endif /* _SINEWAVEFORM_H_ */
