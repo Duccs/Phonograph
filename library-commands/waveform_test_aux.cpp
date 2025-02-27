@@ -20,7 +20,6 @@ void fill_audio_track_with_waveform(ApplicationData& app_data){
         squareWaveform.generateSamples(frequency, audio_track.getSeconds(), audio_track.getSamplesPerSecond(), audio_track);
     } else {
         app_data.getOutputStream() << "Waveform style " + waveform_style + "' is not known.\n";
-        exit(0);
     }
 }
 
