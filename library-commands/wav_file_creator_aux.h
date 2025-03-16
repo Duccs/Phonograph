@@ -4,6 +4,7 @@
 #include "ApplicationData.h"
 
 void configure_audio_track_and_wav_file(ApplicationData& app_data);
+void configure_audio_track(ApplicationData& app_data);
 void fill_channels(ApplicationData& app_data);
 void save_wav_file(ApplicationData& app_data);
 int wav_file_creator(ApplicationData& app_data);

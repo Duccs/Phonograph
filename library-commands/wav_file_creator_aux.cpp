@@ -15,6 +15,15 @@ void configure_audio_track_and_wav_file(ApplicationData& app_data){
     audioTrack.setSeconds(seconds);
 }
 
+void configure_audio_track(ApplicationData& app_data){
+    int samples_per_second = app_data.getInteger("Samples/Second: ");
+    double seconds = app_data.getDouble("Seconds: ");
+
+    AudioTrack& audioTrack = app_data.getAudioTrack();
+    audioTrack.setSamplesPerSecond(samples_per_second);
+    audioTrack.setSeconds(seconds);
+}
+
 void fill_channels(ApplicationData& app_data){
     std::vector<AudioTrack>& channels = app_data.getChannels();
     channels.resize(2);
