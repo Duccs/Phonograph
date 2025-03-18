@@ -43,9 +43,8 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
 }
 
 void assignLinearRamp(const int begin, const int end, AudioTrack& track, const double a0, const double a1) {
-    double delta = (a1 - a0) / (end - begin);
     for (int i = begin; i < end; i++) {
-        double amplitude = a0 + (delta * (i - begin));
+        double amplitude = a0 + (i - begin) * (a1 - a0) / (end - begin - 1);
         track.setValue(i, amplitude);
     }
 }

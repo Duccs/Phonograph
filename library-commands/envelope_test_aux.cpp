@@ -24,7 +24,7 @@ void fill_audio_track_with_envelope(ApplicationData& app_data){
         ADEnvelope adenvelope("ADEnvelope", maximum_amplitude, attack_seconds);
         adenvelope.generateAmplitudes(audio_track.getSeconds(), audio_track.getSamplesPerSecond(), audio_track);
     }else{
-        app_data.getOutputStream() << "Envelope style "+ envelope_style +" is not known.\n";
+        app_data.getOutputStream() << "Envelope style '"+ envelope_style +"' is not known.\n";
     }
 }
 
