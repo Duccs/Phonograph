@@ -1,4 +1,5 @@
 #include "ADSREnvelope.h"
+#include <cmath>
 
 ADSREnvelope::ADSREnvelope(const std::string& name, const std::string& type_name): Envelope(name, type_name), attack(0.0), decay(0.0), sustain(0.5), release(0.0) {}
 
@@ -29,9 +30,9 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
 
     track.setSize(samples_per_second, seconds);
 
-    int attackSamples = static_cast<int>(attack * samples_per_second);
-    int decaySamples = static_cast<int>(decay * samples_per_second);
-    int releaseSamples = static_cast<int>(release * samples_per_second);
+    int attackSamples = round(attack * samples_per_second);
+    int decaySamples = round(decay * samples_per_second);
+    int releaseSamples = round(release * samples_per_second);
     int sustainSamples = track.getSize() - attackSamples - decaySamples - releaseSamples;
     double maximum_amplitude = getMaximumAmplitude();
 
@@ -45,9 +46,8 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
 void assignLinearRamp(const int begin, const int end, AudioTrack& track, const double a0, const double a1) {
     double dbegin = begin;
     double dend = end;
-    double delta = (a1 - a0) / (dend - dbegin);
     for (int i = dbegin; i < dend; i++) {
-        double amplitude = a0 + (delta * (i - dbegin));
+        double amplitude = (i - dbegin) * (a1 - a0) / (dend - dbegin) + a0;
         track.setValue(i, amplitude);
     }
 }
