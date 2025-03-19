@@ -3,16 +3,18 @@
 const std::vector<std::string> WaveformFactory::WaveformName = {"sine", "square", "error"};
 
 std::unique_ptr<Waveform> WaveformFactory::create(WaveformId id, const std::string& name){
+    std::unique_ptr<Waveform> p;
     switch (id) {
         case WF_SINE:
-            return std::make_unique<SineWaveform>(name);
+            p = std::make_unique<SineWaveform>(name);
         case WF_SQUARE:
-            return std::make_unique<SquareWaveform>(name);
+            p =  std::make_unique<SquareWaveform>(name);
         case WF_ERROR:
             //fall through
         default:
-            return nullptr;
+            p =  nullptr;
     }
+    return p;
 }
 
 std::unique_ptr<Waveform> WaveformFactory::create(const std::string& id, const std::string& name){

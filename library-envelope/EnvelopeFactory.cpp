@@ -3,17 +3,18 @@
 const static std::vector<std::string> EnvelopeName = {"AD", "ADSR", "error"};
 
 std::unique_ptr<Envelope> EnvelopeFactory::create(EnvelopeId id, const std::string& name){
+    std::unique_ptr<Envelope> p;
     switch (id) {
         case EN_AD:
-            return std::make_unique<ADSREnvelope>(name);
+            p = std::make_unique<ADSREnvelope>(name);
         case EN_ADSR:
-            return std::make_unique<ADEnvelope>(name);
+            p = std::make_unique<ADEnvelope>(name);
         case EN_ERROR:
             //fall through
         default:
-            return nullptr;
+            p = nullptr;
     }
-
+    return p;
 }
 
 std::unique_ptr<Envelope> EnvelopeFactory::create(const std::string& id, const std::string& name){
@@ -34,4 +35,3 @@ EnvelopeFactory::EnvelopeId EnvelopeFactory::stringToEnvelopeId(const std::strin
 bool EnvelopeFactory::validStringId(const std::string& id) {
     return stringToEnvelopeId(id) != EN_ERROR;
 }
-
