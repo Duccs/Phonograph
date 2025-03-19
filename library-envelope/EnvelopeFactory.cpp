@@ -1,6 +1,6 @@
 #include "EnvelopeFactory.h"
 
-const static std::vector<std::string> EnvelopeName = {"AD", "ADSR", "error"};
+const std::vector<std::string> EnvelopeFactory::EnvelopeName = {"AD", "ADSR", "error"};
 
 std::unique_ptr<Envelope> EnvelopeFactory::create(EnvelopeId id, const std::string& name){
     std::unique_ptr<Envelope> p;
