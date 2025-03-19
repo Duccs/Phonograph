@@ -1,7 +1,7 @@
 # Build the library here
 all: libenvelope.a
 
-libenvelope.a: Envelope.o ADSREnvelope.o ADEnvelope.o Envelopes.o
+libenvelope.a: Envelope.o ADSREnvelope.o ADEnvelope.o Envelopes.o EnvelopeFactory.o
 	ar crus $@ $^
 
 Envelope.o: Envelope.cpp Envelope.h ../include/AudioTrack.h
@@ -16,8 +16,11 @@ ADEnvelope.o: ADEnvelope.cpp ADEnvelope.h
 Envelopes.o: Envelopes.cpp Envelopes.h
 	g++ -I ../include -o $@ -c $<
 
+EnvelopeFactory.o: EnvelopeFactory.h EnvelopeFactory.cpp
+	g++ -I ../include -o $@ -c $<
+
 # Install the library for other parts of the project to use
-install: ../lib/libenvelope.a ../include/Envelope.h ../include/ADSREnvelope.h ../include/ADEnvelope.h ../include/Envelopes.h
+install: ../lib/libenvelope.a ../include/Envelope.h ../include/ADSREnvelope.h ../include/ADEnvelope.h ../include/Envelopes.h ../include/EnvelopeFactory.h
 
 ../lib/libenvelope.a: libenvelope.a
 	cp $< $@
@@ -32,6 +35,9 @@ install: ../lib/libenvelope.a ../include/Envelope.h ../include/ADSREnvelope.h ..
 	cp $< $@
 
 ../include/Envelopes.h: Envelopes.h
+	cp $< $@
+
+../include/EnvelopeFactory.h: EnvelopeFactory.h
 	cp $< $@
 
 clean:
