@@ -39,7 +39,10 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
     printf("samples per second: %d\n", samples_per_second);
     printf("seconds: %f\n", seconds);
     printf("Maximum Amplitude: %f\n", maximum_amplitude);
+    printf("Attack Seconds: %f\n", attack);
+    printf("Decay Seconds: %f\n", decay);
     printf("Sustain Amplitude: %f\n", sustain);
+    printf("Release Seconds: %f\n", release);
     printf("attackEnd: %d decayEnd: %d releaseStart: %d trackEnd: %d\n", attackEnd, decayEnd, releaseStart, trackEnd);
 
     assignAttackAmplitudes(0, attackEnd, track, 0.0, maximum_amplitude);
