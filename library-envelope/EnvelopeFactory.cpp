@@ -7,12 +7,15 @@ std::unique_ptr<Envelope> EnvelopeFactory::create(EnvelopeId id, const std::stri
     switch (id) {
         case EN_AD:
             p = std::make_unique<ADSREnvelope>(name);
+            break;
         case EN_ADSR:
             p = std::make_unique<ADEnvelope>(name);
+            break;
         case EN_ERROR:
             //fall through
         default:
             p = nullptr;
+            break;
     }
     return p;
 }

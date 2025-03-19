@@ -7,12 +7,15 @@ std::unique_ptr<Waveform> WaveformFactory::create(WaveformId id, const std::stri
     switch (id) {
         case WF_SINE:
             p = std::make_unique<SineWaveform>(name);
+            break;
         case WF_SQUARE:
             p =  std::make_unique<SquareWaveform>(name);
+            break;
         case WF_ERROR:
             //fall through
         default:
             p =  nullptr;
+            break;
     }
     return p;
 }
