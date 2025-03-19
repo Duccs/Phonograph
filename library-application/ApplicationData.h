@@ -8,7 +8,6 @@
 #include <map>
 #include <vector>
 
-
 class ApplicationData {
 public:
   ApplicationData(std::istream& input_stream, std::ostream& output_stream);
@@ -32,6 +31,13 @@ public:
   std::vector<AudioTrack>& getChannels();
   const std::vector<AudioTrack>& getChannels() const;
 
+  // void addAction(const ActionFunctionData& action);
+  // void setDone(bool done);
+  // void printActionHelp();
+  // void clearToEOL();
+  // void takeAction(const std::string& choice);
+  // void mainLoop();
+
 protected:
   std::istream& mInputStream;
   std::ostream& mOutputStream;
@@ -40,6 +46,9 @@ protected:
 
   std::vector<double> doubleRegisters;
   std::vector<AudioTrack> audioTracks;
+
+  // bool done;
+  // MenuData menuData;
 
 private:
 

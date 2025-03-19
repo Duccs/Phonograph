@@ -7,14 +7,16 @@ libapplication.a: ApplicationData.o
 ApplicationData.o: ApplicationData.cpp ApplicationData.h ../include/AudioTrack.h
 	g++ -I ../include -o $@ -c $<
 
+
 # Install the library for other parts of the project to use
-install: ../lib/libapplication.a ../include/ApplicationData.h
+install: ../lib/libapplication.a ../include/ApplicationData.h 
 
 ../lib/libapplication.a: libapplication.a
 	cp $< $@
 
 ../include/ApplicationData.h: ApplicationData.h
 	cp $< $@
+
 
 clean:
 	-rm -f *.o libapplication.a

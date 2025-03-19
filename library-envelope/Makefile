@@ -16,7 +16,7 @@ ADEnvelope.o: ADEnvelope.cpp ADEnvelope.h
 Envelopes.o: Envelopes.cpp Envelopes.h
 	g++ -I ../include -o $@ -c $<
 
-EnvelopeFactory.o: EnvelopeFactory.h EnvelopeFactory.cpp
+EnvelopeFactory.o: EnvelopeFactory.cpp EnvelopeFactory.h 
 	g++ -I ../include -o $@ -c $<
 
 # Install the library for other parts of the project to use
