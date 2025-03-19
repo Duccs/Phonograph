@@ -1,4 +1,4 @@
-#ifndef _ASDRENVELOPE_H_
+#ifndef _ADSRENVELOPE_H_
 #define _ADSRENVELOPE_H_
 
 #include "Envelope.h"
