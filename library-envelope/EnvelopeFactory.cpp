@@ -6,10 +6,10 @@ std::unique_ptr<Envelope> EnvelopeFactory::create(EnvelopeId id, const std::stri
     std::unique_ptr<Envelope> p;
     switch (id) {
         case EN_AD:
-            p = std::make_unique<ADSREnvelope>(name);
+            p = std::make_unique<ADEnvelope>(name);
             break;
         case EN_ADSR:
-            p = std::make_unique<ADEnvelope>(name);
+            p = std::make_unique<ADSREnvelope>(name);
             break;
         case EN_ERROR:
             //fall through
