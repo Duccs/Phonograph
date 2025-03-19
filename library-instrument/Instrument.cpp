@@ -23,8 +23,5 @@ void Instrument::generateSamples(const double frequency, const double seconds, c
     AudioTrack waveform_track, envelope_track;
     waveform->generateSamples(frequency, seconds, samples_per_second, waveform_track);
     envelope->generateAmplitudes(seconds, samples_per_second, envelope_track);
-
-    printf("Waveform track size: %d\n", waveform_track.getSize());
-    printf("Envelope track size: %d\n", envelope_track.getSize());
     track = waveform_track * envelope_track;
 }

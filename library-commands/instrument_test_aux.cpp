@@ -47,13 +47,10 @@ int instrument_test(ApplicationData& app_data) {
     std::shared_ptr<Instrument> instrument_ptr = create_instrument(app_data);
     double frequency = app_data.getDouble("Frequency: ");
     app_data.setDoubleRegister(0, frequency);
-    printf("Reached before fill\n");
     fill_audio_track_from_instrument(app_data, instrument_ptr);
-    printf("Reached before channels\n");
     app_data.getChannels().resize(2);
     app_data.getChannels()[0] = app_data.getAudioTrack();
     app_data.getChannels()[1] = app_data.getAudioTrack();
-    printf("Reached after channels\n");
     save_wav_file(app_data);
     return 0;
 
