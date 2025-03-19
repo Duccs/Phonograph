@@ -31,10 +31,12 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
     track.setSize(samples_per_second, seconds);
 
     double maximum_amplitude = getMaximumAmplitude();
-    int attackEnd = round(samples_per_second * attack);
-    int decayEnd = round(samples_per_second * (attack + decay));
-    int releaseStart = round(samples_per_second * (seconds - release));
-    int trackEnd = round(samples_per_second * seconds);
+    int attackEnd = std::round(samples_per_second * attack);
+    int decayEnd = std::round(samples_per_second * (attack + decay));
+    int releaseStart = std::round(samples_per_second * (seconds - release));
+    int trackEnd = std::round(samples_per_second * seconds);
+
+    printf("attackEnd: %d decayEnd: %d releaseStart: %d trackEnd: %d\n", attackEnd, decayEnd, releaseStart, trackEnd);
 
     assignAttackAmplitudes(0, attackEnd, track, 0.0, maximum_amplitude);
     assignDecayAmplitudes(attackEnd, decayEnd, track, maximum_amplitude, sustain);
@@ -44,10 +46,8 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
 }
 
 void assignLinearRamp(const int begin, const int end, AudioTrack& track, const double a0, const double a1) {
-    double dbegin = begin;
-    double dend = end;
-    for (int i = dbegin; i < dend; i++) {
-        double amplitude = (i - dbegin) * (a1 - a0) / (dend - dbegin) + a0;
+    for (int i = begin; i < end; i++) {
+        double amplitude = (i - begin) * (a1 - a0) / (end - begin) + a0;
         track.setValue(i, amplitude);
     }
 }
