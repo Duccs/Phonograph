@@ -36,10 +36,15 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
     int sustainSamples = track.getSize() - attackSamples - decaySamples - releaseSamples;
     double maximum_amplitude = getMaximumAmplitude();
 
-    assignAttackAmplitudes(0, attackSamples, track, 0.0, maximum_amplitude);
-    assignDecayAmplitudes(attackSamples, attackSamples + decaySamples, track, maximum_amplitude, sustain);
-    assignSustainAmplitudes(attackSamples + decaySamples, attackSamples + decaySamples + sustainSamples, track, sustain);
-    assignReleaseAmplitudes((track.getSize() - releaseSamples), track.getSize(), track, sustain, 0.0);
+    int attackEnd = attackSamples;
+    int decayEnd = attackSamples + decaySamples;
+    int releaseStart = track.getSize() - releaseSamples;
+    int sustainEnd = releaseStart;
+
+    assignAttackAmplitudes(0, attackEnd, track, 0.0, maximum_amplitude);
+    assignDecayAmplitudes(attackEnd, decayEnd, track, maximum_amplitude, sustain);
+    assignSustainAmplitudes(decayEnd, sustainEnd, track, sustain);
+    assignReleaseAmplitudes(releaseStart, track.getSize(), track, sustain, 0.0);
 
 }
 
