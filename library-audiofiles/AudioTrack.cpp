@@ -74,3 +74,19 @@ void AudioTrack::resizeValues() {
         values[i] = 0;
     }
 }
+
+AudioTrack AudioTrack::operator*(const AudioTrack& rhs) const{
+    if(getSamplesPerSecond() != rhs.getSamplesPerSecond() || getSeconds() != rhs.getSeconds()){
+        return AudioTrack();
+    }
+
+    AudioTrack result;
+    result.setSamplesPerSecond(getSamplesPerSecond());
+    result.setSeconds(getSeconds());
+
+    for(unsigned int i = 0; i < getSize(); i++){
+        result.setValue(i, getValue(i) * rhs.getValue(i));
+    }
+
+    return result;
+}

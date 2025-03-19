@@ -22,6 +22,8 @@ class AudioTrack {
 
         void setValue(const unsigned int index, const double value);
 
+        AudioTrack operator*(const AudioTrack& rhs) const;
+
     protected:
         int samplesPerSecond;
         double seconds;
