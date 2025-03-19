@@ -33,7 +33,7 @@ void ADSREnvelope::generateAmplitudes(const double seconds, const int samples_pe
     double maximum_amplitude = getMaximumAmplitude();
     int attackEnd = std::round(samples_per_second * attack);
     int decayEnd = std::round(samples_per_second * (attack + decay));
-    int releaseStart = std::round(samples_per_second * (seconds - release));
+    int releaseStart = ceil(samples_per_second * (seconds - release));
     int trackEnd = std::round(samples_per_second * seconds);
 
     printf("attackEnd: %d decayEnd: %d releaseStart: %d trackEnd: %d\n", attackEnd, decayEnd, releaseStart, trackEnd);
