@@ -1,5 +1,7 @@
 #include "WaveformFactory.h"
 
+const std::vector<std::string> WaveformFactory::WaveformName = {"sine", "square", "error"};
+
 std::unique_ptr<Waveform> WaveformFactory::create(WaveformId id, const std::string& name){
     switch (id) {
         case WF_SINE:

@@ -1,5 +1,7 @@
 #include "EnvelopeFactory.h"
 
+const static std::vector<std::string> EnvelopeName = {"AD", "ADSR", "error"};
+
 std::unique_ptr<Envelope> EnvelopeFactory::create(EnvelopeId id, const std::string& name){
     switch (id) {
         case EN_AD:
