@@ -129,7 +129,8 @@ void editEnvelopeUI(ApplicationData& app_data) {
         return;
     }
 
-    double envelope_amplitude = app_data.getDouble("Maximum amplitude: ");
+    double envelope_amplitude = envelope.get()->getMaximumAmplitude();
+    envelope_amplitude = app_data.getDouble("Maximum amplitude(" + cleanDouble(envelope_amplitude) + "): ");
     //shared set
     envelope.get()->setMaximumAmplitude(envelope_amplitude);
     if (envelope->getTypeName() == "ADSR")
@@ -208,7 +209,7 @@ void editInstrumentUI(ApplicationData& app_data){
 
     if (instrument == nullptr)
     {
-        app_data.getOutputStream() << instrument_name << " does not name a instrument in this application.\n";
+        app_data.getOutputStream() << instrument_name << " does not name an instrument in this application.\n";
         return;
     }
     if (waveform == nullptr)
@@ -237,7 +238,7 @@ void recordInstrumentNoteUI(ApplicationData& app_data){
 
     if (instrument == nullptr)
     {
-        app_data.getOutputStream() << instrument_name << " does not name a instrument in this application.\n";
+        app_data.getOutputStream() << instrument_name << " does not name an instrument in this application.\n";
         return;
     }
     
