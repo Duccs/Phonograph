@@ -2,10 +2,10 @@ all: build
 
 build:
 	make -C library-audiofiles install
-	make -C library-application install
 	make -C library-waveform install
 	make -C library-envelope install
 	make -C library-instrument install
+	make -C library-application install
 	make -C library-commands install
 	make -C program-hello all
 	make -C program-questions3 all
@@ -21,10 +21,10 @@ build:
 
 clean:
 	make -C library-audiofiles clean
-	make -C library-application clean
 	make -C library-waveform clean
 	make -C library-envelope clean
 	make -C library-instrument clean
+	make -C library-application clean
 	make -C library-commands clean
 	make -C program-hello clean
 	make -C program-questions3 clean
