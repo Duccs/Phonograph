@@ -17,6 +17,7 @@ build:
 	make -C program-envelope-test all
 	make -C program-instrument-test all
 	make -C program-menu-test all
+	make -C program-instrument-designer all
 
 clean:
 	make -C library-audiofiles clean
@@ -35,5 +36,6 @@ clean:
 	make -C program-envelope-test clean
 	make -C program-instrument-test clean
 	make -C program-menu-test clean
+	make -C program-instrument-designer clean
 	-cd lib && rm -f *.a 
 	-cd include && rm -f *.h

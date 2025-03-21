@@ -9,7 +9,8 @@
 
 ApplicationData::ApplicationData(std::istream& input_stream, std::ostream& output_stream) 
 	: mInputStream(input_stream), mOutputStream(output_stream), mAudioTrack(), mWAVFile(1, 8), 
-	  doubleRegisters(), audioTracks(), done(false), menuData(){
+	  doubleRegisters(), audioTracks(), done(false), menuData(),
+	  waveforms(), envelopes(), instrumentarium() {
 	doubleRegisters.resize(5);
 	audioTracks.resize(0);
 }
@@ -126,3 +127,15 @@ void ApplicationData::mainLoop(){
         takeAction(choice);
     }
 }
+
+Waveforms& ApplicationData::getWaveforms() { return waveforms; }
+
+const Waveforms& ApplicationData::getWaveforms() const { return waveforms; }
+
+Envelopes& ApplicationData::getEnvelopes() { return envelopes; }
+
+const Envelopes& ApplicationData::getEnvelopes() const { return envelopes; }
+
+Instrumentarium& ApplicationData::getInstrumentarium() { return instrumentarium; }
+
+const Instrumentarium& ApplicationData::getInstrumentarium() const { return instrumentarium; }

@@ -9,6 +9,9 @@
 #include <vector>
 #include "ActionFunctionData.h"
 #include "MenuData.h"
+#include "Waveforms.h"
+#include "Envelopes.h"
+#include "Instrumentarium.h"
 
 class ApplicationData {
     public:
@@ -41,6 +44,13 @@ class ApplicationData {
         void takeAction(const std::string& choice);
         void mainLoop();
 
+        Waveforms& getWaveforms();
+        const Waveforms& getWaveforms() const;
+        Envelopes& getEnvelopes();
+        const Envelopes& getEnvelopes() const;
+        Instrumentarium& getInstrumentarium();
+        const Instrumentarium& getInstrumentarium() const;
+        
     protected:
         std::istream& mInputStream;
         std::ostream& mOutputStream;
@@ -52,6 +62,10 @@ class ApplicationData {
 
         bool done;
         MenuData menuData;
+
+        Waveforms waveforms;
+        Envelopes envelopes;
+        Instrumentarium instrumentarium;
 
     private:
 
