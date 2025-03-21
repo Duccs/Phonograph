@@ -4,7 +4,8 @@ all: libapplication.a
 libapplication.a: ApplicationData.o ActionFunctionData.o MenuData.o
 	ar crus $@ $^
 
-ApplicationData.o: ApplicationData.cpp ApplicationData.h ../include/AudioTrack.h
+ApplicationData.o: ApplicationData.cpp ApplicationData.h ../include/AudioTrack.h \
+ ../include/Waveforms.h ../include/Envelopes.h ../include/Instrumentarium.h
 	g++ -I ../include -o $@ -c $<
 
 ActionFunctionData.o: ActionFunctionData.cpp ActionFunctionData.h

@@ -9,8 +9,8 @@
 #include <vector>
 #include "ActionFunctionData.h"
 #include "MenuData.h"
-#include "Waveforms.h"
 #include "Envelopes.h"
+#include "Waveforms.h"
 #include "Instrumentarium.h"
 
 class ApplicationData {
