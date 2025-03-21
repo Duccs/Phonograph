@@ -47,7 +47,7 @@ const ActionFunctionData& MenuData::getAction(const std::string& name){
 void MenuData::printActionHelp(std::ostream& out) const{
     out << "Options are:\n";
     for (const auto& action : actions) {
-        out << "  " << action.first << " - " << action.second.getDescription() << ".\n";
+        out << "  " << action.first << " - " << action.second.getDescription() << "\n";
     }
     out << "\n";
 }
