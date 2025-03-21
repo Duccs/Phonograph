@@ -3,7 +3,8 @@
 
 #include <map>
 #include <string>
-#include "ActionFunctionData.h"
+
+class ActionFunctionData;
 
 class MenuData {
     protected:

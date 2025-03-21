@@ -2,7 +2,8 @@
 #define _ACTION_FUNCTION_DATA_H_
 
 #include <string>
-#include "ApplicationData.h"
+
+class ApplicationData;
 
 class ActionFunctionData {
     public:
