@@ -232,6 +232,54 @@ void put_frequency_in_register(ApplicationData& app_data){
     app_data.setDoubleRegister(0, frequency);
 }
 
+void configureAudioQualityUI(ApplicationData& app_data){
+    std::string quality = app_data.getString("Quality: ");
+
+    if (quality == "low")
+    {
+        WAVFile& wavfile = app_data.getWAVFile();
+        AudioTrack& audioTrack = app_data.getAudioTrack();
+        wavfile.setSamplesPerSecond(8000);
+        wavfile.setBitsPerSample(8);
+    
+        audioTrack.setSamplesPerSecond(8000);
+    }
+    else if (quality == "mid")
+    {
+        WAVFile& wavfile = app_data.getWAVFile();
+        AudioTrack& audioTrack = app_data.getAudioTrack();
+        wavfile.setSamplesPerSecond(16000);
+        wavfile.setBitsPerSample(16);
+    
+        audioTrack.setSamplesPerSecond(16000);
+    }
+    else if (quality == "high")
+    {
+        WAVFile& wavfile = app_data.getWAVFile();
+        AudioTrack& audioTrack = app_data.getAudioTrack();
+        wavfile.setSamplesPerSecond(32000);
+        wavfile.setBitsPerSample(16);
+    
+        audioTrack.setSamplesPerSecond(32000);
+    }
+    else if (quality == "CD"){
+        WAVFile& wavfile = app_data.getWAVFile();
+        AudioTrack& audioTrack = app_data.getAudioTrack();
+        wavfile.setSamplesPerSecond(44100);
+        wavfile.setBitsPerSample(16);
+    
+        audioTrack.setSamplesPerSecond(44100);
+    } else{
+        app_data.getOutputStream() << "The quality '" << quality << "' is not known.\n";
+    }
+}
+
+void configureTrackDurationUI(ApplicationData& app_data){
+    double seconds = app_data.getDouble("Seconds: ");
+    AudioTrack& audioTrack = app_data.getAudioTrack();
+    audioTrack.setSeconds(seconds);
+}
+
 void recordInstrumentNoteUI(ApplicationData& app_data){
     std::string instrument_name = app_data.getString("Instrument name: ");
     std::shared_ptr<Instrument> instrument = app_data.getInstrumentarium().getInstrument(instrument_name);
@@ -266,6 +314,8 @@ int register_instrument_designer_commands(ApplicationData& app_data){
     app_data.addAction(ActionFunctionData("edit-instrument", editInstrumentUI, "Edit instrument in the inventory."));
     app_data.addAction(ActionFunctionData("record-instrument-note", recordInstrumentNoteUI, "Record a note for an instrument to a WAV file."));
     app_data.addAction(ActionFunctionData("configure-audio-track-and-wav-file", configure_audio_track_and_wav_file, "Configure meta data for the audio track and WAV file."));
+    app_data.addAction(ActionFunctionData("configure-audio-quality", configureAudioQualityUI, "Configure the sample rate and bit depth."));
+    app_data.addAction(ActionFunctionData("configure-duration", configureTrackDurationUI, "Configure the audio track duration."));
 
     return 0;
 }

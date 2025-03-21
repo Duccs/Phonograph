@@ -17,6 +17,10 @@ void editInstrumentUI(ApplicationData& app_data);
 
 void put_frequency_in_register(ApplicationData& app_data);
 
+void configureAudioQualityUI(ApplicationData& app_data);
+
+void configureTrackDurationUI(ApplicationData& app_data);
+
 void recordInstrumentNoteUI(ApplicationData& app_data);
 
 int register_instrument_designer_commands(ApplicationData& app_data);

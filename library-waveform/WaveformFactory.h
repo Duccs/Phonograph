@@ -7,12 +7,13 @@
 #include "Waveform.h"
 #include "SineWaveform.h"
 #include "SquareWaveform.h"
+#include "TriangleWaveform.h"
 
 class WaveformFactory {
     public:
         const static std::vector<std::string> WaveformName;
 
-        enum WaveformId {WF_SINE, WF_SQUARE, WF_ERROR};
+        enum WaveformId {WF_SINE, WF_SQUARE, WF_TRIANGLE, WF_ERROR};
 
         static std::unique_ptr<Waveform> create(WaveformId id, const std::string& name);
 

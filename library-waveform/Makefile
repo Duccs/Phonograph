@@ -1,7 +1,7 @@
 # Build the library here
 all: libwaveform.a
 
-libwaveform.a: Waveform.o SineWaveform.o SquareWaveform.o Waveforms.o WaveformFactory.o
+libwaveform.a: Waveform.o SineWaveform.o SquareWaveform.o TriangleWaveform.o Waveforms.o WaveformFactory.o
 	ar crus $@ $^ 
 
 Waveform.o: Waveform.cpp Waveform.h ../include/AudioTrack.h
@@ -13,6 +13,9 @@ SineWaveform.o: SineWaveform.cpp SineWaveform.h
 SquareWaveform.o: SquareWaveform.cpp SquareWaveform.h
 	g++ -I ../include -o $@ -c $<
 
+TriangleWaveform.o: TriangleWaveform.cpp TriangleWaveform.h
+	g++ -I ../include -o $@ -c $<
+
 Waveforms.o: Waveforms.cpp Waveforms.h
 	g++ -I ../include -o $@ -c $<
 
@@ -20,7 +23,9 @@ WaveformFactory.o: WaveformFactory.cpp WaveformFactory.h
 	g++ -I ../include -o $@ -c $<
 
 # Install the library for other parts of the project to use
-install: ../lib/libwaveform.a ../include/Waveform.h ../include/SineWaveform.h ../include/SquareWaveform.h ../include/Waveforms.h ../include/WaveformFactory.h
+install: ../lib/libwaveform.a ../include/Waveform.h ../include/SineWaveform.h \
+../include/SquareWaveform.h ../include/Waveforms.h ../include/WaveformFactory.h \
+../include/TriangleWaveform.h
 
 ../lib/libwaveform.a: libwaveform.a
 	cp $< $@
@@ -32,6 +37,9 @@ install: ../lib/libwaveform.a ../include/Waveform.h ../include/SineWaveform.h ..
 	cp $< $@
 
 ../include/SquareWaveform.h: SquareWaveform.h
+	cp $< $@
+
+../include/TriangleWaveform.h: TriangleWaveform.h
 	cp $< $@
 
 ../include/Waveforms.h: Waveforms.h

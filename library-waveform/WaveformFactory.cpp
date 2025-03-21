@@ -1,6 +1,6 @@
 #include "WaveformFactory.h"
 
-const std::vector<std::string> WaveformFactory::WaveformName = {"sine", "square", "error"};
+const std::vector<std::string> WaveformFactory::WaveformName = {"sine", "square", "triangle", "error"};
 
 std::unique_ptr<Waveform> WaveformFactory::create(WaveformId id, const std::string& name){
     std::unique_ptr<Waveform> p;
@@ -10,6 +10,9 @@ std::unique_ptr<Waveform> WaveformFactory::create(WaveformId id, const std::stri
             break;
         case WF_SQUARE:
             p =  std::make_unique<SquareWaveform>(name);
+            break;
+        case WF_TRIANGLE:
+            p = std::make_unique<TriangleWaveform>(name);
             break;
         case WF_ERROR:
             //fall through
