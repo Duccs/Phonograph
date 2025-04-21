@@ -5,6 +5,8 @@ build:
 	make -C library-waveform install
 	make -C library-envelope install
 	make -C library-instrument install
+	make -C library-score install
+	make -C library-score-io install
 	make -C library-application install
 	make -C library-commands install
 	make -C program-hello all
@@ -18,12 +20,15 @@ build:
 	make -C program-instrument-test all
 	make -C program-menu-test all
 	make -C program-instrument-designer all
+	make -C program-score-editor all
 
 clean:
 	make -C library-audiofiles clean
 	make -C library-waveform clean
 	make -C library-envelope clean
 	make -C library-instrument clean
+	make -C library-score clean
+	make -C library-score-io clean
 	make -C library-application clean
 	make -C library-commands clean
 	make -C program-hello clean
@@ -37,5 +42,6 @@ clean:
 	make -C program-instrument-test clean
 	make -C program-menu-test clean
 	make -C program-instrument-designer clean
+	make -C program-score-editor clean
 	-cd lib && rm -f *.a 
 	-cd include && rm -f *.h

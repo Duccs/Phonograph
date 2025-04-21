@@ -4,8 +4,18 @@
 #include <iostream>
 #include <cmath>
 #include <limits>
+#include <iomanip>
 #include "MenuData.h"
 #include "ActionFunctionData.h"
+
+std::string ApplicationData::cleanDouble(double num){
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(10) << num; // set a high precision to avoid rounding errors
+    std::string str = ss.str();
+    str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+    if (str.back() == '.') str.pop_back();
+    return str;
+}
 
 ApplicationData::ApplicationData(std::istream& input_stream, std::ostream& output_stream) 
 	: mInputStream(input_stream), mOutputStream(output_stream), mAudioTrack(), mWAVFile(1, 8), 
@@ -139,3 +149,11 @@ const Envelopes& ApplicationData::getEnvelopes() const { return envelopes; }
 Instrumentarium& ApplicationData::getInstrumentarium() { return instrumentarium; }
 
 const Instrumentarium& ApplicationData::getInstrumentarium() const { return instrumentarium; }
+
+const MusicalScore& ApplicationData::getScore() const{
+	return score;
+}
+
+MusicalScore& ApplicationData::getScore(){
+	return score;
+}

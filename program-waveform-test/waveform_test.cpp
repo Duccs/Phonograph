@@ -1,4 +1,5 @@
 #include "waveform_test_aux.h"
+#include "ApplicationData.h"
 #include <iostream>
 
 int main() {

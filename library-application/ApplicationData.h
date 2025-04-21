@@ -12,9 +12,15 @@
 #include "Envelopes.h"
 #include "Waveforms.h"
 #include "Instrumentarium.h"
+#include "MusicalScore.h"
+
+
 
 class ApplicationData {
     public:
+        // AUXILLARY METHOD
+        std::string cleanDouble(double num);
+
         ApplicationData(std::istream& input_stream, std::ostream& output_stream);
 
         int getInteger(const std::string& prompt);
@@ -50,6 +56,9 @@ class ApplicationData {
         const Envelopes& getEnvelopes() const;
         Instrumentarium& getInstrumentarium();
         const Instrumentarium& getInstrumentarium() const;
+
+        const MusicalScore& getScore() const;
+        MusicalScore& getScore();
         
     protected:
         std::istream& mInputStream;
@@ -66,6 +75,8 @@ class ApplicationData {
         Waveforms waveforms;
         Envelopes envelopes;
         Instrumentarium instrumentarium;
+
+        MusicalScore score;
 
     private:
 

@@ -4,6 +4,8 @@
 #include "AudioTrack.h"
 #include <string>
 
+const std::string AMPLITUDE = "AMPLITUDE";
+
 class Waveform {
     
     protected:
