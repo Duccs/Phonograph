@@ -5,6 +5,10 @@
 
 
 void readScoreUI(ApplicationData& app);
+void writeScoreUI(ApplicationData& app);
+
+void setScoreTimeSignatureUI(ApplicationData& app);
+void setScoreTempoUI(ApplicationData& app);
 
 void listScoreWaveformsUI(ApplicationData& app);
 void addScoreWaveformUI(ApplicationData& app);
@@ -13,6 +17,10 @@ void editScoreWaveformUI(ApplicationData& app);
 void listScoreEnvelopesUI(ApplicationData& app);
 void addScoreEnvelopeUI(ApplicationData& app);
 void editScoreEnvelopeUI(ApplicationData& app);
+
+void listScoreInstrumentsUI(ApplicationData& app);
+void addScoreInstrumentUI(ApplicationData& app);
+void editScoreInstrumentUI(ApplicationData& app);
 
 int register_score_editor_commands(ApplicationData& app_data);
 

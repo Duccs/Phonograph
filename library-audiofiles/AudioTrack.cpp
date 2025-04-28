@@ -75,6 +75,24 @@ void AudioTrack::resizeValues() {
     }
 }
 
+void AudioTrack::addAt(const AudioTrack& other_track, double offset_seconds){
+    // Only add if sample rates match
+    if (getSamplesPerSecond() != other_track.getSamplesPerSecond()) {
+        return;
+    }
+    // Calculate starting index
+    int start_index = static_cast<int>(offset_seconds * getSamplesPerSecond());
+    if (start_index < 0) return;
+
+    // Add values from other_track to this track at the offset
+    for (unsigned int i = 0; i < other_track.getSize(); ++i) {
+        int target_index = start_index + i;
+        if (indexValid(target_index)) {
+            setValue(target_index, getValue(target_index) + other_track.getValue(i));
+        }
+    }
+}
+
 AudioTrack AudioTrack::operator*(const AudioTrack& rhs) const{
     if(getSamplesPerSecond() != rhs.getSamplesPerSecond() || getSeconds() != rhs.getSeconds()){
         return AudioTrack();

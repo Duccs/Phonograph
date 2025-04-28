@@ -1,11 +1,23 @@
 #include "ScoreReader.h"
 #include "WaveformFactory.h"
 #include "EnvelopeFactory.h"
+#include "Instrumentarium.h"
 #include <string>
 #include <memory>
+#include <cctype>
 
 ScoreReader::ScoreReader() {}
 ScoreReader::~ScoreReader() {}
+
+// Helper function
+bool isNumber(const std::string& s) {
+    if (s.empty()) return false;
+    for (char c : s) {
+        if (!std::isdigit(c)) return false;
+    }
+    return true;
+}
+// End helper function
 
 void ScoreReader::readScore(std::istream& input_stream, MusicalScore& score) const{
     std::string keyword;
@@ -24,9 +36,25 @@ void ScoreReader::readScore(std::istream& input_stream, MusicalScore& score) con
             std::shared_ptr<Envelope> envelope = readEnvelope(input_stream, score);
         } else if (keyword == "INSTRUMENT"){
             std::shared_ptr<Instrument> instrument = readInstrument(input_stream, score);
+        } else if (keyword == "TIME-SIGNATURE"){
+            int beats_per_bar, beat_value;
+            input_stream >> beats_per_bar >> beat_value;
+            if (!input_stream.fail()) {
+                // Input is a valid number
+                score.setTimeSignature(TimeSignature(beats_per_bar, beat_value));
+            }
+        } else if (keyword == "TEMPO"){
+            double tempo;
+            input_stream >> tempo;
+            if (!input_stream.fail()) {
+                // Input is a valid number
+                score.setTempo(tempo);
+            }
+        } else if (keyword == "STAFF"){
+            MusicalStaff staff = MusicalStaff();
+            readStaff(input_stream, score, staff);
         }
         // Future keywords will go here ↓↓
-
     }
     
     if(input_stream.eof()){
@@ -84,7 +112,6 @@ std::shared_ptr<Waveform> ScoreReader::readWaveform(std::istream& input_stream, 
 }
 
 std::shared_ptr<Envelope> ScoreReader::readEnvelope(std::istream& is, MusicalScore& score) const{
-    
     std::string keyword;
     std::string envelope_name;
     std::string envelope_type;
@@ -194,7 +221,7 @@ std::shared_ptr<Instrument> ScoreReader::readInstrument(std::istream& is, Musica
     }
 
     while(is >> keyword){
-        if(keyword == "INSTRUEMENT-END"){
+        if(keyword == "INSTRUMENT-END"){
             break;
         } else if (keyword == "WAVEFORM") {
             waveform = readWaveform(is, score);
@@ -214,7 +241,43 @@ std::shared_ptr<Instrument> ScoreReader::readInstrument(std::istream& is, Musica
         return nullptr;
     }
 
-    std::shared_ptr<Instrument> instrument_ptr = std::shared_ptr<Instrument>(new Instrument(instrument_name, waveform, envelope));
+    std::shared_ptr<Instrument> instrument_ptr = std::make_unique<Instrument>(instrument_name, waveform, envelope);
     score.getInstrumentarium().addInstrument(instrument_name, instrument_ptr);
     return instrument_ptr;
+}
+
+void ScoreReader::readStaff(std::istream& is, MusicalScore& score, MusicalStaff& staff) const{
+    std::string keyword;
+    std::string staff_name;
+    std::string instrument_name;
+    is >> staff_name;
+    is >> instrument_name;
+
+    std::shared_ptr<Instrument> instrument = score.getInstrumentarium().getInstrument(instrument_name);
+    if (!instrument){
+        return;
+    }
+
+    staff.setName(staff_name);
+    staff.setInstrument(instrument);
+
+    while(is >> keyword){
+        if(keyword == "END-STAFF"){
+            break;
+        } else if (isNumber(keyword)){
+            double start = std::stod(keyword);
+            is >> keyword;
+            //StaffNote note = new StaffNote(keyword, start);
+            staff.addNote(StaffNote(keyword, start));
+        } else{
+            return;
+        }
+    }
+
+    if (is.eof()) {
+        return;
+    }
+
+    return;
+    
 }

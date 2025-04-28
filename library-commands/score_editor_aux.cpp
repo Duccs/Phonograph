@@ -1,5 +1,6 @@
 #include "score_editor_aux.h"
 #include "ScoreReader.h"
+#include "ScoreWriter.h"
 #include "WaveformFactory.h"
 #include "EnvelopeFactory.h"
 #include "menu_test_aux.h"
@@ -16,6 +17,30 @@ void readScoreUI(ApplicationData& app){
 
     ScoreReader reader;
     reader.readScore(input_stream, app.getScore());
+}
+
+void writeScoreUI(ApplicationData& app){
+    std::string file_name = app.getString("Filename: ");
+    std::ofstream output_stream(file_name);
+
+    if (!output_stream.is_open()) {
+        app.getOutputStream() << "Unable to open file '" << file_name << "' for writing.\n";
+        return;
+    }
+
+    ScoreWriter writer;
+    writer.writeScore(output_stream, app.getScore());
+}
+
+void setScoreTimeSignatureUI(ApplicationData& app){
+    int beats_per_bar = app.getInteger("Beats per bar: ");
+    int beat_value = app.getInteger("Beat value: ");
+    app.getScore().setTimeSignature(TimeSignature(beats_per_bar, beat_value));
+}
+
+void setScoreTempoUI(ApplicationData& app){
+    double tempo = app.getDouble("Beats per minute: ");
+    app.getScore().setTempo(tempo);
 }
 
 void listScoreWaveformsUI(ApplicationData& app){
@@ -166,15 +191,77 @@ void editScoreEnvelopeUI(ApplicationData& app) {
     }
 }
 
+void listScoreInstrumentsUI(ApplicationData& app) {
+    Instrumentarium::const_iterator it;
+    for (it = app.getScore().getInstrumentarium().begin(); it != app.getScore().getInstrumentarium().end(); ++it) {
+        Instrument instrument = *it->second;
+        app.getOutputStream() << it->first << " : " << instrument.getName() << " : ";
+        
+        app.getOutputStream() << instrument.getWaveform()->getName() << " ";
+        app.getOutputStream() << instrument.getEnvelope()->getName() << "\n";
+    }
+}
+
+void addScoreInstrumentUI(ApplicationData& app){
+    std::string instrument_name = app.getString("Instrument name: ");
+    std::string waveform_name = app.getString("Waveform name: ");
+    std::string envelope_name = app.getString("Envelope name: ");
+    std::shared_ptr<Waveform> waveform = app.getScore().getWaveforms().getWaveform(waveform_name);
+    std::shared_ptr<Envelope> envelope = app.getScore().getEnvelopes().getEnvelope(envelope_name);
+    if(waveform == nullptr){
+        app.getOutputStream() << "Unable to find a waveform with name '" << waveform_name << "'.\n";
+        return;
+    }
+    if(envelope == nullptr){
+        app.getOutputStream() << "Unable to find an envelope with name '" << envelope_name << "'.\n";
+        return;
+    }
+
+    std::shared_ptr<Instrument> instrument = std::make_unique<Instrument>(instrument_name, waveform, envelope);
+    app.getScore().getInstrumentarium().addInstrument(instrument_name, instrument);
+}
+
+void editScoreInstrumentUI(ApplicationData& app){
+    std::string instrument_name = app.getString("Instrument name: ");
+    std::shared_ptr<Instrument> instrument = app.getScore().getInstrumentarium().getInstrument(instrument_name);
+    if (instrument == nullptr)
+    {
+        app.getOutputStream() << "Unable to find instrument with name '" << instrument_name << "'.\n";
+        return;
+    }
+    
+    std::string waveform_name = app.getString("Waveform name: ");
+    std::string envelope_name = app.getString("Envelope name: ");
+    std::shared_ptr<Waveform> waveform = app.getScore().getWaveforms().getWaveform(waveform_name);
+    std::shared_ptr<Envelope> envelope = app.getScore().getEnvelopes().getEnvelope(envelope_name);
+    if(waveform == nullptr){
+        app.getOutputStream() << "Unable to find a waveform with name '" << waveform_name << "'.\n";
+        return;
+    }
+    if(envelope == nullptr){
+        app.getOutputStream() << "Unable to find an envelope with name '" << envelope_name << "'.\n";
+        return;
+    }
+
+    instrument->setWaveform(waveform);
+    instrument->setEnvelope(envelope);
+}
+
 int register_score_editor_commands(ApplicationData& app_data){
     register_menu_test_commands(app_data);
     app_data.addAction(ActionFunctionData("score-read", readScoreUI, "Read score from file."));
+    app_data.addAction(ActionFunctionData("score-write", writeScoreUI, "Write score to score file."));
     app_data.addAction(ActionFunctionData("score-list-waveforms", listScoreWaveformsUI, "List waveforms in the score."));
     app_data.addAction(ActionFunctionData("score-add-waveform", addScoreWaveformUI, "Add waveform to the score."));
     app_data.addAction(ActionFunctionData("score-edit-waveform", editScoreWaveformUI, "Edit waveform in the score."));
     app_data.addAction(ActionFunctionData("score-list-envelopes", listScoreEnvelopesUI, "List envelopes in the score."));
     app_data.addAction(ActionFunctionData("score-add-envelope", addScoreEnvelopeUI, "Add envelope to the score."));
     app_data.addAction(ActionFunctionData("score-edit-envelope", editScoreEnvelopeUI, "Edit envelope in the score."));
+    app_data.addAction(ActionFunctionData("score-list-instruments", listScoreInstrumentsUI, "List instruments in the score."));
+    app_data.addAction(ActionFunctionData("score-add-instrument", addScoreInstrumentUI, "Add instrument to the score."));
+    app_data.addAction(ActionFunctionData("score-edit-instrument", editScoreInstrumentUI, "Edit instrument in the score."));
+    app_data.addAction(ActionFunctionData("score-set-time-signature", setScoreTimeSignatureUI, "Edit the time signature of a score."));
+    app_data.addAction(ActionFunctionData("score-set-tempo", setScoreTempoUI, "Edit the tempo of a score."));
 
     return 0;
 }

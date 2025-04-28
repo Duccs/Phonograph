@@ -22,6 +22,8 @@ class AudioTrack {
 
         void setValue(const unsigned int index, const double value);
 
+        void addAt(const AudioTrack& other_track, double offset_seconds);
+
         AudioTrack operator*(const AudioTrack& rhs) const;
 
     protected:
