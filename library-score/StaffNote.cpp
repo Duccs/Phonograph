@@ -23,8 +23,9 @@ void StaffNote::setStart(const double start) {
 }
 
 std::ostream& operator<<(std::ostream& os, const StaffNote& staff_note) {
-    os << staff_note.getStart() << " " 
-       << staff_note.getNote().getName() << " " 
-       << staff_note.getNote().getDuration();
+    os << staff_note.getStart() << " "
+    << staff_note.getNote().getDuration() << " "
+    << staff_note.getNote().getName() << "(" << staff_note.getNote().getFrequency() << ")";
+       
     return os;
 }

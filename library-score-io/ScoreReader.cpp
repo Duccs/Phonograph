@@ -262,13 +262,16 @@ void ScoreReader::readStaff(std::istream& is, MusicalScore& score, MusicalStaff&
     staff.setInstrument(instrument);
 
     while(is >> keyword){
-        if(keyword == "END-STAFF"){
+        printf("!!!!!! Keyword: %s\n", keyword.c_str());
+        if(keyword == "STAFF-END"){
             break;
         } else if (isNumber(keyword)){
+            printf("!!!!!! Recoginzed keyword as a number: %s\n", keyword.c_str());
             double start = std::stod(keyword);
             is >> keyword;
             //StaffNote note = new StaffNote(keyword, start);
             staff.addNote(StaffNote(keyword, start));
+            printf("!!!!!! Added note: %s\n", keyword.c_str());
         } else{
             return;
         }

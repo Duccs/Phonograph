@@ -114,10 +114,10 @@ void ScoreWriter::writeStaffNote(std::ostream& os, const MusicalScore& score, co
 }
 
 void ScoreWriter::writeStaff(std::ostream& os, const MusicalScore& score, const MusicalStaff& staff) const{
-    os << "  STAFF " << staff.getName() << std::endl;
+    os << "  STAFF " << staff.getName() << " " << staff.getInstrument()->getName() << std::endl;
     for (const StaffNote& staff_note : staff.getNotes()) {
         writeStaffNote(os, score, staff_note);
     }
-    os << "  END-STAFF" << std::endl;
+    os << "  STAFF-END" << std::endl;
     os << "" << std::endl;
 }
