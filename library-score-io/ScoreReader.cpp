@@ -12,8 +12,14 @@ ScoreReader::~ScoreReader() {}
 // Helper function
 bool isNumber(const std::string& s) {
     if (s.empty()) return false;
+    bool has_dot = false;
     for (char c : s) {
-        if (!std::isdigit(c)) return false;
+        if (c == '.') {
+            if (has_dot) return false; // multiple '.' characters are not allowed
+            has_dot = true;
+        } else if (!std::isdigit(c)) {
+            return false;
+        }
     }
     return true;
 }
