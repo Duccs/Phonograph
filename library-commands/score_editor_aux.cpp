@@ -313,6 +313,42 @@ void addStaffNoteUI(ApplicationData& app){
     staff.addNote(StaffNote(Note(note, duration), start));
 }
 
+void buildScoreInstrumentFromWaveformAndEnvelopePair(ApplicationData& app, std::shared_ptr<Waveform> w, std::shared_ptr<Envelope> e){
+    std::string instrument_name = (w->getName() + "/" + e->getName());
+    std::shared_ptr<Instrument> instrument = std::make_unique<Instrument>(instrument_name, w, e);
+    app.getScore().getInstrumentarium().addInstrument(instrument_name, instrument);
+}
+
+void buildScoreAllPossibleInstrumentsUI(ApplicationData& app){
+    Waveforms::const_iterator w;
+    Envelopes::const_iterator e;
+    for (w = app.getScore().getWaveforms().begin(); w != app.getScore().getWaveforms().end(); ++w) {
+        for (e = app.getScore().getEnvelopes().begin(); e != app.getScore().getEnvelopes().end(); ++e) {
+            buildScoreInstrumentFromWaveformAndEnvelopePair(app, w->second, e->second);
+        }
+    }
+}
+
+void addStaffNoteRunUI(ApplicationData& app){
+    std::string staff_name = app.getString("Staff name: ");
+    MusicalStaff& staff = app.getScore().getStaff(staff_name);
+    double start = app.getDouble("Start: ");
+    std::string duration = app.getString("Duration: ");
+    std::string note = app.getString("First note: ");
+
+    // First Note
+    Note first_note = Note(note, duration);
+    staff.addNote(StaffNote(first_note, start));
+
+    // Second Note
+    std::string second_note = first_note.relativeNoteNameFlat(4);
+    staff.addNote(StaffNote(Note(second_note, duration), start + first_note.getDuration()));
+
+    // Third Note
+    std::string third_note = first_note.relativeNoteNameFlat(7);
+    staff.addNote(StaffNote(Note(third_note, duration), start + (first_note.getDuration() * 2)));
+}
+
 int register_score_editor_commands(ApplicationData& app_data){
     register_menu_test_commands(app_data);
     app_data.addAction(ActionFunctionData("score-read", readScoreUI, "Read score from file."));
@@ -334,7 +370,9 @@ int register_score_editor_commands(ApplicationData& app_data){
     app_data.addAction(ActionFunctionData("score-show-staff", showStaffUI, "Display staff details."));
     app_data.addAction(ActionFunctionData("score-staff-add-note", addStaffNoteUI, "Add a note to a staff."));
     app_data.addAction(ActionFunctionData("score-render", renderScoreUI, "Render score to wav file."));
-
+    app_data.addAction(ActionFunctionData("score-build-all-instruments", buildScoreAllPossibleInstrumentsUI, "Build an instrument for each waveform/envelope pair in the score."));
+    app_data.addAction(ActionFunctionData("score-staff-add-note-run", addStaffNoteRunUI, "Add a run of notes to a staff."));
+    
     return 0;
 }
 

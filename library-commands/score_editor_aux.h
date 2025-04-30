@@ -29,6 +29,13 @@ void addStaffUI(ApplicationData& app);
 void showStaffUI(ApplicationData& app);
 void addStaffNoteUI(ApplicationData& app);
 
+// BuildAllInstruments Task
+void buildScoreInstrumentFromWaveformAndEnvelopePair(ApplicationData& app, std::shared_ptr<Waveform> w, std::shared_ptr<Envelope> e);
+void buildScoreAllPossibleInstrumentsUI(ApplicationData& app);
+
+// AddNoteRun Task
+void addStaffNoteRunUI(ApplicationData& app);
+
 int register_score_editor_commands(ApplicationData& app_data);
 
 int score_editor(ApplicationData& app_data);

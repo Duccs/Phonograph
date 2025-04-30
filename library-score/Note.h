@@ -3,6 +3,8 @@
 
 #include "Frequency.h"
 #include <ostream>
+#include <string>
+#include <vector>
 
 constexpr double SIXTEENTH_NOTE = 0.125/2.0;
 constexpr double EIGHTH_NOTE = 0.125;
@@ -14,6 +16,8 @@ class Note {
     protected:
         std::string name;
         double duration;
+        static const std::vector<std::string> g_names_flat;
+
     public:
         Note();
         Note(const std::string& full_note);
@@ -28,6 +32,12 @@ class Note {
         void setDuration(const double duration);
         void setDuration(const std::string& duration_str);
         void set(const std::string& full_note);
+
+        // Note Run Task
+        std::string keyName() const;
+        int octaveNumber() const;
+        unsigned int findKeyPositionFlat() const;
+        std::string relativeNoteNameFlat(unsigned int semitones) const;
 
     protected:
         void splitString(const std::string& full_note, std::string& name, std::string& duration);

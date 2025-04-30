@@ -1,6 +1,8 @@
 #include "Note.h"
 #include <vector>
 
+const std::vector<std::string> Note::g_names_flat = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
+
 Note::Note() : name(""), duration(0.0) {}
 
 Note::Note(const std::string& full_note) : name(""), duration(0.0) {
@@ -70,6 +72,57 @@ void Note::set(const std::string& full_note) {
     splitString(full_note, name_part, duration_part);
     setName(name_part);
     setDuration(duration_part);
+}
+
+std::string Note::keyName() const {
+    std::string str = this->name;
+    int index = 0;
+    while (index < str.length() && !std::isdigit(str[index])) {
+        index++;
+    }
+
+    return str.substr(0, index);
+}
+
+int Note::octaveNumber() const{
+    std::string str = this->name;
+    int index = 0;
+    while (index < str.length() && !std::isdigit(str[index])) {
+        index++;
+    }
+
+    return std::stoi(str.substr(index));
+}
+
+unsigned int Note::findKeyPositionFlat() const{
+    for (int index = 0; index < g_names_flat.size(); index++) {
+        if (g_names_flat[index] == keyName()) {
+            return index;
+        }
+    }
+
+    return g_names_flat.size() + 1;
+}
+
+std::string Note::relativeNoteNameFlat(unsigned int semitones) const{
+    int octave = octaveNumber();
+    unsigned int key_index = findKeyPositionFlat();
+    unsigned int new_key_index = (key_index + semitones) % g_names_flat.size();
+
+    // If semitones are 12 or above account for wrapping
+    double wrapping = semitones / 12.0;
+    if(wrapping >= 1) {
+        octave += static_cast<int>(wrapping);
+    }
+
+    // Go up an octave
+    if (new_key_index < key_index) {
+        octave++;
+    }
+
+    std::string relative_note_name = g_names_flat[new_key_index] + std::to_string(octave);
+
+    return relative_note_name;
 }
 
 void Note::splitString(const std::string& full_note, std::string& name, std::string& duration) {
