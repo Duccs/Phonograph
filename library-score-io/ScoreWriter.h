@@ -5,6 +5,7 @@
 #include "Note.h"
 #include "StaffNote.h"
 #include "MusicalStaff.h"
+#include "MusicalStaves.h"
 
 class ScoreWriter {
     public:

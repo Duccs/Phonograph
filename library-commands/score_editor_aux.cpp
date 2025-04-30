@@ -1,6 +1,7 @@
 #include "score_editor_aux.h"
 #include "ScoreReader.h"
 #include "ScoreWriter.h"
+#include "WavWriter.h"
 #include "WaveformFactory.h"
 #include "EnvelopeFactory.h"
 #include "menu_test_aux.h"
@@ -30,6 +31,14 @@ void writeScoreUI(ApplicationData& app){
 
     ScoreWriter writer;
     writer.writeScore(output_stream, app.getScore());
+}
+
+void renderScoreUI(ApplicationData& app){
+    std::string file_name = app.getString("Filename: ");
+    int samples_per_second = app.getInteger("Samples per second: ");
+    int bits_per_sample = app.getInteger("Bits per sample: ");
+    WavWriter writer;
+    writer.writeWavFromScore(app.getScore(), samples_per_second, bits_per_sample, file_name);
 }
 
 void setScoreTimeSignatureUI(ApplicationData& app){
@@ -247,6 +256,63 @@ void editScoreInstrumentUI(ApplicationData& app){
     instrument->setEnvelope(envelope);
 }
 
+void setStaffInstrumentUI(ApplicationData& app){
+    std::string staff_name = app.getString("Staff name: ");
+    MusicalStaff& staff = app.getScore().getStaff(staff_name);
+
+    // Check for staff if it exists??
+    //
+
+    std::string instrument_name = app.getString("Instrument name: ");
+    std::shared_ptr<Instrument> instrument = app.getScore().getInstrumentarium().getInstrument(instrument_name);
+    if (instrument == nullptr)
+    {
+        app.getOutputStream() << "Unable to find instrument with name '" << instrument_name << "'.\n";
+        return;
+    }
+    staff.setInstrument(instrument);
+}
+
+void listScoreStavesUI(ApplicationData& app){
+    MusicalStaves::const_iterator it;
+    for (it = app.getScore().getStaves().begin(); it != app.getScore().getStaves().end(); ++it) {
+        MusicalStaff staff = it->second;
+        //app.getOutputStream() << it->second.getName() << " " << staff.getInstrument()->getName() << std::endl;
+        app.getOutputStream() << it->second << std::endl;
+    }
+}
+
+void addStaffUI(ApplicationData& app){
+    std::string staff_name = app.getString("Staff name: ");
+    std::string instrument_name = app.getString("Instrument name: ");
+    std::shared_ptr<Instrument> instrument = app.getScore().getInstrumentarium().getInstrument(instrument_name);
+    if (instrument == nullptr)
+    {
+        app.getOutputStream() << "Unable to find instrument with name '" << instrument_name << "'.\n";
+        return;
+    }
+    app.getScore().addStaff(MusicalStaff(staff_name, instrument));
+}
+
+void showStaffUI(ApplicationData& app){
+    std::string staff_name = app.getString("Staff name: ");
+    MusicalStaff& staff = app.getScore().getStaff(staff_name);
+    app.getOutputStream() << staff.toString() << std::endl;
+    for (const auto& note : staff.getNotes()) {
+        app.getOutputStream() << note.getStart() << " " << note.getNote().getDuration() << " " << note.getNote().getName() << std::endl;
+    }
+    app.getOutputStream() << std::endl;
+}
+
+void addStaffNoteUI(ApplicationData& app){
+    std::string staff_name = app.getString("Staff name: ");
+    MusicalStaff& staff = app.getScore().getStaff(staff_name);
+    double start = app.getDouble("Start: ");
+    std::string duration = app.getString("Duration: ");
+    std::string note = app.getString("Note: ");
+    staff.addNote(StaffNote(Note(note, duration), start));
+}
+
 int register_score_editor_commands(ApplicationData& app_data){
     register_menu_test_commands(app_data);
     app_data.addAction(ActionFunctionData("score-read", readScoreUI, "Read score from file."));
@@ -262,6 +328,12 @@ int register_score_editor_commands(ApplicationData& app_data){
     app_data.addAction(ActionFunctionData("score-edit-instrument", editScoreInstrumentUI, "Edit instrument in the score."));
     app_data.addAction(ActionFunctionData("score-set-time-signature", setScoreTimeSignatureUI, "Edit the time signature of a score."));
     app_data.addAction(ActionFunctionData("score-set-tempo", setScoreTempoUI, "Edit the tempo of a score."));
+    app_data.addAction(ActionFunctionData("score-staff-set-instrument", setStaffInstrumentUI, "Change instrument assigned to a staff in the score."));
+    app_data.addAction(ActionFunctionData("score-list-staves", listScoreStavesUI, "List staves in the score."));
+    app_data.addAction(ActionFunctionData("score-add-staff", addStaffUI, "Add a staff to the score."));
+    app_data.addAction(ActionFunctionData("score-show-staff", showStaffUI, "Display staff details."));
+    app_data.addAction(ActionFunctionData("score-staff-add-note", addStaffNoteUI, "Add a note to a staff."));
+    app_data.addAction(ActionFunctionData("score-render", renderScoreUI, "Render score to wav file."));
 
     return 0;
 }

@@ -6,6 +6,7 @@
 
 void readScoreUI(ApplicationData& app);
 void writeScoreUI(ApplicationData& app);
+void renderScoreUI(ApplicationData& app);
 
 void setScoreTimeSignatureUI(ApplicationData& app);
 void setScoreTempoUI(ApplicationData& app);
@@ -21,6 +22,12 @@ void editScoreEnvelopeUI(ApplicationData& app);
 void listScoreInstrumentsUI(ApplicationData& app);
 void addScoreInstrumentUI(ApplicationData& app);
 void editScoreInstrumentUI(ApplicationData& app);
+
+void setStaffInstrumentUI(ApplicationData& app);
+void listScoreStavesUI(ApplicationData& app);
+void addStaffUI(ApplicationData& app);
+void showStaffUI(ApplicationData& app);
+void addStaffNoteUI(ApplicationData& app);
 
 int register_score_editor_commands(ApplicationData& app_data);
 

@@ -26,7 +26,9 @@ std::shared_ptr<const Instrument> MusicalStaff::getInstrument() const { return i
 
 void MusicalStaff::setInstrument(std::shared_ptr<Instrument> instrument) { this->instrument = instrument; }
 
-void MusicalStaff::addNote(const StaffNote& note) { notes.push_back(note); }
+void MusicalStaff::addNote(const StaffNote& note) { 
+    notes.push_back(note); 
+}
 
 const std::vector<StaffNote>& MusicalStaff::getNotes() const { return notes; }
 

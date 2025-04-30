@@ -1,7 +1,7 @@
 # Build the library here
 all: libscore.a
 
-libscore.a: MusicalScore.o TimeSignature.o Frequency.o Note.o StaffNote.o MuiscalStaff.o
+libscore.a: MusicalScore.o TimeSignature.o Frequency.o Note.o StaffNote.o MuiscalStaff.o MusicalStaves.o
 	ar crus $@ $^
 
 MusicalScore.o: MusicalScore.cpp MusicalScore.h ../include/Waveforms.h
@@ -22,9 +22,12 @@ StaffNote.o: StaffNote.cpp StaffNote.h
 MuiscalStaff.o: MusicalStaff.cpp MusicalStaff.h
 	g++ -I ../include -o $@ -c $<
 
+MusicalStaves.o: MusicalStaves.cpp MusicalStaves.h
+	g++ -I ../include -o $@ -c $<
+
 # Install the library for other parts of the project to use
 install: ../lib/libscore.a ../include/MusicalScore.h ../include/TimeSignature.h ../include/Frequency.h \
-../include/Note.h ../include/StaffNote.h ../include/MusicalStaff.h
+../include/Note.h ../include/StaffNote.h ../include/MusicalStaff.h ../include/MusicalStaves.h
 
 ../lib/libscore.a: libscore.a
 	cp $< $@
@@ -45,6 +48,9 @@ install: ../lib/libscore.a ../include/MusicalScore.h ../include/TimeSignature.h 
 	cp $< $@
 
 ../include/MusicalStaff.h: MusicalStaff.h
+	cp $< $@
+
+../include/MusicalStaves.h: MusicalStaves.h
 	cp $< $@
 
 clean:

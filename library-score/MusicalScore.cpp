@@ -1,8 +1,8 @@
 #include "MusicalScore.h"
 
-MusicalScore::MusicalScore(): waveforms(), envelopes(), instrumentarium(), time_signature(), tempo(100) {}
+MusicalScore::MusicalScore(): waveforms(), envelopes(), instrumentarium(), staves(), time_signature(), tempo(100) {}
 MusicalScore::MusicalScore(const TimeSignature& time_signature, const double tempo) : 
-    waveforms(), envelopes(), instrumentarium(), time_signature(time_signature), tempo(tempo) {}
+    waveforms(), envelopes(), instrumentarium(), staves(), time_signature(time_signature), tempo(tempo) {}
 
 TimeSignature& MusicalScore::getTimeSignature() { return time_signature; }
 const TimeSignature& MusicalScore::getTimeSignature() const { return time_signature; }
@@ -21,3 +21,30 @@ const Envelopes& MusicalScore::getEnvelopes() const { return envelopes; }
 
 Instrumentarium& MusicalScore::getInstrumentarium() { return instrumentarium; }
 const Instrumentarium& MusicalScore::getInstrumentarium() const { return instrumentarium; }
+
+void MusicalScore::addStaff(const MusicalStaff& staff) { staves.addStaff(staff.getName(), staff); }
+
+MusicalStaff& MusicalScore::getStaff(const std::string& name) { return staves.getStaff(name); }
+const MusicalStaff& MusicalScore::getStaff(const std::string& name) const { return staves.getStaff(name); }
+
+MusicalStaves& MusicalScore::getStaves() { return staves; }
+const MusicalStaves& MusicalScore::getStaves() const { return staves; }
+
+void MusicalScore::renderStaff(const MusicalStaff& staff, const int samples_per_second, AudioTrack& track) const { 
+    staff.render(this->getTimeSignature(), this->getTempo(), samples_per_second, track);
+}
+void MusicalScore::renderStaves(const int samples_per_second, std::map<std::string, AudioTrack>& tracks) const { 
+    for (MusicalStaves::const_iterator it = staves.begin(); it != staves.end(); ++it) {
+        AudioTrack track;
+        renderStaff(it->second, samples_per_second, track);
+        tracks[it->first] = track;
+    }
+}
+
+void MusicalScore::renderWavChannels(const int samples_per_second, std::vector<AudioTrack>& channels) const {
+    std::map<std::string, AudioTrack> tracks;
+    renderStaves(samples_per_second, tracks);
+    for (const auto& track : tracks) {
+        channels.push_back(track.second);
+    }
+}

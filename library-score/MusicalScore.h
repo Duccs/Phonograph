@@ -4,6 +4,7 @@
 #include "Waveforms.h"
 #include "Envelopes.h"
 #include "Instrumentarium.h"
+#include "MusicalStaves.h"
 #include "TimeSignature.h"
 
 class MusicalScore {
@@ -12,6 +13,7 @@ class MusicalScore {
         Waveforms waveforms;
         Envelopes envelopes;
         Instrumentarium instrumentarium;
+        MusicalStaves staves;
         TimeSignature time_signature;
         double tempo;
 
@@ -33,6 +35,17 @@ class MusicalScore {
 
         Instrumentarium& getInstrumentarium();
         const Instrumentarium& getInstrumentarium() const;
+
+        void addStaff(const MusicalStaff& staff);
+        MusicalStaff& getStaff(const std::string& name);
+        const MusicalStaff& getStaff(const std::string& name) const;
+
+        MusicalStaves& getStaves();
+        const MusicalStaves& getStaves() const;
+
+        void renderStaff(const MusicalStaff& staff, const int samples_per_second, AudioTrack& track) const; 
+        void renderStaves(const int samples_per_second, std::map<std::string, AudioTrack>& tracks) const;
+        void renderWavChannels(const int samples_per_second, std::vector<AudioTrack>& channels) const;
 };
 
 #endif /* _MUSICALSCORE_H_ */

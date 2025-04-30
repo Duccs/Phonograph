@@ -33,6 +33,12 @@ void ScoreWriter::writeScore(std::ostream& output_stream, const MusicalScore& sc
     for (instrument_it = score.getInstrumentarium().begin(); instrument_it != score.getInstrumentarium().end(); ++instrument_it) {
         writeInstrument(output_stream, score, *instrument_it->second);
     }
+
+    // Write all staves
+    MusicalStaves::const_iterator staff_it;
+    for (staff_it = score.getStaves().begin(); staff_it != score.getStaves().end(); ++staff_it) {
+        writeStaff(output_stream, score, staff_it->second);
+    }
     
     // Write SCORE-END keyword to end the score section
     output_stream << "SCORE-END" << std::endl;
